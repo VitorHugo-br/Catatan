@@ -1,0 +1,36 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@layout AuthLayout
+
+
+<PageTitle>Catatan - Login</PageTitle>
+
+<EditForm Model="@LoginFormModel" OnValidSubmit="@HandleSubmit" class="d-flex flex-column justify-content-center align-items-center gap-3 w-50">
+    <DataAnnotationsValidator />
+
+    <div class="w-100 d-flex  flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Email:
+        </label>
+        <InputText @bind-Value="LoginFormModel.Email" class="form-control w-50" />
+        <ValidationMessage For="@(() => LoginFormModel.Email)" />
+    </div>
+
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Password:
+        </label>
+        <InputText @bind-Value="LoginFormModel.Password" type="password" class="form-control w-50" />
+        <ValidationMessage For="@(() => LoginFormModel.Password)" />
+    </div>
+
+    <div class="w-100 d-flex justify-content-center gap-2">
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button class="btn btn-secondary">
+            <NavLink class="nav-link" href="register">
+                Register
+            </NavLink>
+        </button>
+    </div>
+
+</EditForm>

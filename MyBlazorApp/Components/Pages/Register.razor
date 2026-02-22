@@ -1,0 +1,52 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@layout AuthLayout
+
+
+<PageTitle>Catatan - Register</PageTitle>
+
+<EditForm Model="@RegisterFormModel" OnValidSubmit="@HandleSubmit" class="d-flex flex-column justify-content-center align-items-center gap-3 w-50">
+    <DataAnnotationsValidator />
+
+    <div class="w-100 d-flex  flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Name:
+        </label>
+        <InputText @bind-Value="RegisterFormModel.Name" class="form-control w-50" />
+        <ValidationMessage For="@(() => RegisterFormModel.Name)" />
+    </div>
+
+    <div class="w-100 d-flex  flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Email:
+        </label>
+        <InputText @bind-Value="RegisterFormModel.Email" class="form-control w-50" />
+        <ValidationMessage For="@(() => RegisterFormModel.Email)" />
+    </div>
+
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Password:
+        </label>
+        <InputText @bind-Value="RegisterFormModel.Password" type="password" class="form-control w-50" />
+        <ValidationMessage For="@(() => RegisterFormModel.Password)" />
+    </div>
+
+    <div class="w-100 d-flex flex-column justify-content-center align-items-center">
+        <label class="form-label w-50 text-lg-start">
+            Confirm Password:
+        </label>
+        <InputText @bind-Value="RegisterFormModel.ConfirmPassword" type="password" class="form-control w-50" />
+        <ValidationMessage For="@(() => RegisterFormModel.ConfirmPassword)" />
+    </div>
+
+    <div class="w-100 d-flex justify-content-center gap-2">
+        <button type="submit" class="btn btn-primary">Register</button>
+        <button class="btn btn-secondary">
+            <NavLink class="nav-link" href="">
+                Login
+            </NavLink>
+        </button>
+    </div>
+
+</EditForm>

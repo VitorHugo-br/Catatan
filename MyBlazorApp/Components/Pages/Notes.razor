@@ -1,0 +1,63 @@
+﻿@page "/notes"
+
+<PageTitle>Catatan - Notes</PageTitle>
+
+<section class="w-100 h-100 d-flex flex-column align-items-center">
+    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
+        <EditForm Model="@SearchNoteModel" OnValidSubmit="@HandleSubmit" class="d-flex align-items-center gap-3">
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                TaskID:
+                <InputText @bind-Value="SearchNoteModel.TaskID" type="number" class="form-control W-100 d-inline-block" min="0" />
+            </label>
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                User:
+                <InputSelect @bind-Value="SearchNoteModel.UserID" class="form-select W-100 d-inline-block">
+                    <option value="">All</option>
+                    @foreach (var user in Users)
+                    {
+                        <option value="@user.Id">@user.Name</option>
+                    }
+                </InputSelect>
+            </label>
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                Issuer:
+                <InputSelect @bind-Value="SearchNoteModel.TaskIssuerID" class="form-select W-100 d-inline-block">
+                    <option value="">All</option>
+                    @foreach (var issuer in Issuers)
+                    {
+                        <option value="@issuer.Id">@issuer.Name</option>
+                    }
+                </InputSelect>
+            </label>
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                Status:
+                <InputSelect @bind-Value="SearchNoteModel.Status" class="form-select W-100 d-inline-block">
+                    <option value="">All</option>
+                    <option value="0">Pending</option>
+                    <option value="1">InProgress</option>
+                    <option value="2">Completed</option>
+                    <option value="3">Delivered</option>
+                </InputSelect>
+            </label>
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                Created At:
+                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.CreatedAt" />
+            </label>
+
+            <label class="form-label w-100 text-lg-start d-flex flex-column">
+                Due Date:
+                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.DueDate" />
+            </label>
+
+            <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Search</button>
+        </EditForm>
+    </div>
+    <div class="w-100 h-100">
+    </div>
+</section>
+
