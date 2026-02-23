@@ -6,14 +6,14 @@ namespace MyBlazorApp.Models
     {
         public int Id { get; set; }
         public Guid Guid { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int Status { get; set; } 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public DateTime DueDate { get; set; }
-        public string RequestedBy { get; set; }
-        public int UserId { get; set; }
-        public DateTime? CreatedAt { get; set; } = DateTime.Now;
+        public string Title { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public int Status { get; set; }
+        public DateTime? StartDate { get; set; } = null;
+        public DateTime? EndDate { get; set; } = null;
+        public DateTime? DueDate { get; set; }
+        public int IssuerId { get; set; }
+        public int? UserId { get; set; }
+        public DateTime? CreatedAt { get; set; }
     }
 }

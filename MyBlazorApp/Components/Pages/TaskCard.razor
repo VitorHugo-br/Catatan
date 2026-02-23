@@ -1,0 +1,33 @@
+﻿<div>
+    <div class="card mb-3 paper-card">
+        <div class="card-body notepad">
+            <h5 class="card-title note-id">#@TaskId.ToString("D4")</h5>
+            <h1 class="card-title note-title">@Title</h1>
+            <h3 class="card-subtitle mb-2 text-muted note-desc">@Description</h3>
+            <p class="card-text">Assigned to: <strong>@UserName</strong></p>
+            <p class="card-text">Issuer: <strong>@IssuerName</strong></p>
+            <p class="card-text">
+                Status:
+                @switch (Status)
+                {
+                    case 0:
+                        <span class="badge notepad-badge bg-warning text-dark">Pending</span>
+                        break;
+                    case 1:
+                        <span class="badge notepad-badge bg-primary">In Progress</span>
+                        break;
+                    case 2:
+                        <span class="badge notepad-badge bg-success">Completed</span>
+                        break;
+                    case 3:
+                        <span class="badge notepad-badge bg-danger">Cancelled</span>
+                        break;
+
+                }
+            </p>
+            <p class="card-text">Start Date: @StartDate</p>
+            <p class="card-text">Created At: @CreatedAt?.ToString("g")</p>
+            <p class="card-text">Due Date: @DueDate?.ToString("g")</p>
+        </div>
+    </div>
+</div>
