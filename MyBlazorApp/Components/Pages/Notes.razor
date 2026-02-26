@@ -57,29 +57,38 @@
             <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Search</button>
         </EditForm>
     </div>
-    <div class="w-100 h-100">
+    <div class="container task-grid">
         @if (Tasks != null && Tasks.Any())
         {
             @foreach (var note in Tasks)
             {
                 var userName = Users.FirstOrDefault(u => u.Id == note.UserId)?.Name ?? "Unknown User";
                 var issuerName = Issuers.FirstOrDefault(i => i.Id == note.IssuerId)?.Name ?? "Unknown Issuer";
-                <TaskCard 
-                    TaskId="@note.Id" 
-                    Title="@note.Title" 
-                    UserName="@userName" 
-                    IssuerName="@issuerName" 
-                    Status="@note.Status"  
-                    CreatedAt="@note.CreatedAt" 
-                    DueDate="@note.DueDate"  
-                    Description="@note.Description"
-                    StartDate="@note.StartDate"
-                 />
+                <TaskCard TaskId="@note.Id"
+                          Title="@note.Title"
+                          UserName="@userName"
+                          IssuerName="@issuerName"
+                          Status="@note.Status"
+                          CreatedAt="@note.CreatedAt"
+                          DueDate="@note.DueDate"
+                          Description="@note.Description"
+                          StartDate="@note.StartDate" />
             }
         }
         else
         {
-            <p class="text-center mt-5">No notes found.</p>
+            <div class="empty-state">
+                <div class="empty-state__icon-wrapper">
+                    <svg class="empty-state__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3" />
+                        <path d="M20 24h24M20 32h16M20 40h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+                        <path d="M44 38l6 6m0 0l-6 6m6-6H38" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+                    </svg>
+                    <div class="empty-state__pulse"></div>
+                </div>
+                <h3 class="empty-state__title">Nenhuma nota encontrada</h3>
+                <p class="empty-state__subtitle">Tente ajustar os filtros de busca ou crie uma nova nota.</p>
+            </div>
         }
     </div>
 </section>

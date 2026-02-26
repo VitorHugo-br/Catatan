@@ -23,11 +23,9 @@ namespace MyBlazorApp.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
-
             await FetchUsers();
             await FetchIssuers();
             await FetchTasks();
-
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -129,7 +127,7 @@ namespace MyBlazorApp.Components.Pages
             }
             if (!string.IsNullOrEmpty(SearchNoteModel.TaskIssuerID))
             {
-                request.AddQueryParameter("taskIssuerID", SearchNoteModel.TaskIssuerID);
+                request.AddQueryParameter("IssuerId", SearchNoteModel.TaskIssuerID);
             }
             if (SearchNoteModel.DueDate.HasValue)
             {

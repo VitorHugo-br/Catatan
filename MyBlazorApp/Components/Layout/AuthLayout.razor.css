@@ -8,6 +8,7 @@
     height: 100dvh;
     width: 100dvw;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-image: linear-gradient(to right top, #230537, #2e214e, #3a3a64, #495379, #5d6d8c);
@@ -15,3 +16,16 @@
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.icon {
+    width: 8rem;
+    height: 8rem;
+    user-select: none;
+}
+
+.betania-patmos-regular {
+    font-family: "Betania Patmos", cursive;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 70px;
+    user-select: none;
+}

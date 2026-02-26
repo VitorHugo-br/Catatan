@@ -1,0 +1,118 @@
+.notfound-page {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.nf-content {
+    max-width: 560px;
+}
+
+    .nf-content h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .nf-content p {
+        color: rgba(15,23,42,0.8);
+        margin-bottom: 1rem;
+    }
+
+.nf-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.nf-tips {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: rgba(15,23,42,0.75);
+}
+
+.notfound-img {
+    width: 300px;
+    height: 300px;
+    background-image: url("../../nofoundcat.gif");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.puppet-svg {
+    width: 220px;
+    height: auto;
+    overflow: visible;
+}
+
+/* puppet animations */
+.arm-left {
+    transform-origin: 6px 0px;
+    animation: wave 2.2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0% {
+        transform: translate(40px,120px) rotate(0deg);
+    }
+
+    15% {
+        transform: translate(40px,120px) rotate(-18deg);
+    }
+
+    30% {
+        transform: translate(40px,120px) rotate(10deg);
+    }
+
+    45% {
+        transform: translate(40px,120px) rotate(-12deg);
+    }
+
+    60% {
+        transform: translate(40px,120px) rotate(6deg);
+    }
+
+    100% {
+        transform: translate(40px,120px) rotate(0deg);
+    }
+}
+
+/* blink animation for eyes */
+.eyes circle {
+    transform-origin: center;
+    animation: blink 5s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 94% {
+        transform: scaleY(1);
+    }
+
+    96% {
+        transform: scaleY(0.05);
+    }
+
+    98% {
+        transform: scaleY(1);
+    }
+}
+
+/* responsive */
+@media (max-width: 768px) {
+    .notfound-page {
+        flex-direction: column-reverse;
+        padding: 2rem 1rem;
+    }
+
+    .nf-puppet {
+        width: 160px;
+        height: 160px;
+    }
+
+    .nf-content h1 {
+        font-size: 1.5rem;
+    }
+}

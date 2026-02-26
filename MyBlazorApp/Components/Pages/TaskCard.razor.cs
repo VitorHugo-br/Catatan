@@ -5,6 +5,10 @@ namespace MyBlazorApp.Components.Pages
 {
     public partial class TaskCard
     {
+        [Inject]
+        private NavigationManager NavigationManager { get; set; } = default!;
+
+
         [Parameter]
         public int TaskId { get; set; }
         [Parameter]
@@ -24,5 +28,9 @@ namespace MyBlazorApp.Components.Pages
         [Parameter]
         public DateTime? DueDate { get; set; }
 
+
+        public async void Redirect() { 
+            NavigationManager.NavigateTo($"/viewtask/{TaskId}");
+        }
     }
 }

@@ -1,5 +1,24 @@
 ﻿@page "/not-found"
 @layout MainLayout
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<div class="notfound-page">
+    <section class="nf-content">
+        <h1>Página não encontrada</h1>
+        <p>Ops! Parece que essa página foi passear. Vamos te levar de volta.</p>
+
+        <div class="nf-actions">
+            <NavLink class="btn btn-primary" href="/">Ir para a página inicial</NavLink>
+            <NavLink class="btn btn-outline-secondary" href="/notes" >Ver minhas notas</NavLink>
+        </div>
+
+        <ul class="nf-tips">
+            <li>Verifique o endereço URL.</li>
+            <li>Use a navegação lateral para encontrar suas notas.</li>
+            <li>Se acha que isto é um erro, tente recarregar a página.</li>
+        </ul>
+    </section>
+
+    <div class="notfound-img">
+
+    </div>
+</div>
