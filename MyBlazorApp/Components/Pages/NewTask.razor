@@ -4,43 +4,49 @@
 
 <PageTitle>New Task</PageTitle>
 
-<div class="h-100 w-100 d-flex flex-column justify-content-center align-items-center">
-    <EditForm Model="@_newTaskFormModel" onsubmit="@AddTask"
-              class="d-flex flex-column gap-3 w-100 align-items-center justify-content-center">
-        <DataAnnotationsValidator/>
+<div class="task-page">
+    <div class="task-form-card">
+        <div class="task-form-header">
+            <h1 class="task-form-title">Create New Task</h1>
+            <p class="task-form-subtitle">Fill in the details below to add a new task.</p>
+        </div>
 
-        <Label class="d-flex flex-column">
-            Title:
-            <InputText @bind-value="_newTaskFormModel.Title" class="form-control"></InputText>
-            <ValidationMessage For="@(() => _newTaskFormModel.Title)"></ValidationMessage>
-        </Label>
+        <EditForm Model="@_newTaskFormModel" OnValidSubmit="@AddTask" class="task-form">
+            <DataAnnotationsValidator/>
 
-        <Label class="d-flex flex-column">
-            Description:
-            <InputTextArea @bind-Value="_newTaskFormModel.Description" class="form-control"></InputTextArea>
-            <ValidationMessage For="@(() => _newTaskFormModel.Description)"></ValidationMessage>
-        </Label>
+            <div class="task-form-group">
+                <label class="form-label task-label">Title</label>
+                <InputText @bind-Value="_newTaskFormModel.Title" class="form-control task-input" placeholder="Enter task title"/>
+                <ValidationMessage For="@(() => _newTaskFormModel.Title)"/>
+            </div>
 
-        <Label class="d-flex flex-column">
-            Due Date:
-            <InputDate @bind-Value="_newTaskFormModel.DueDate" class="form-control"></InputDate>
-            <ValidationMessage For="@(() => _newTaskFormModel.DueDate)"></ValidationMessage>
-        </Label>
+            <div class="task-form-group">
+                <label class="form-label task-label">Description</label>
+                <InputTextArea @bind-Value="_newTaskFormModel.Description" class="form-control task-input" rows="5" placeholder="Write a short description"/>
+                <ValidationMessage For="@(() => _newTaskFormModel.Description)"/>
+            </div>
 
-        <label class="d-flex flex-column">
-            Status:
-            <InputSelect @bind-Value="_newTaskFormModel.Status" class="form-control">
-                <option value="0">Pending</option>
-                <option value="1">In Progress</option>
-                <option value="2">Completed</option>
-                <option value="3">Delivered</option>
-            </InputSelect>
-        </label>
+            <div class="task-form-row">
+                <div class="task-form-group">
+                    <label class="form-label task-label">Due Date</label>
+                    <InputDate @bind-Value="_newTaskFormModel.DueDate" class="form-control task-input"/>
+                    <ValidationMessage For="@(() => _newTaskFormModel.DueDate)"/>
+                </div>
 
+                <div class="task-form-group">
+                    <label class="form-label task-label">Status</label>
+                    <InputSelect @bind-Value="_newTaskFormModel.Status" class="form-select task-input">
+                        <option value="0">Pending</option>
+                        <option value="1">In Progress</option>
+                        <option value="2">Completed</option>
+                        <option value="3">Delivered</option>
+                    </InputSelect>
+                </div>
+            </div>
 
-        <Button type="submit" class="btn btn-primary">Add Task</Button>
-
-    </EditForm>
-
-
+            <button type="submit" class="btn btn-primary task-submit-btn">
+                Add Task
+            </button>
+        </EditForm>
+    </div>
 </div>
