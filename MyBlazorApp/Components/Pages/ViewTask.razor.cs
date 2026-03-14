@@ -1,51 +1,41 @@
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using Microsoft.AspNetCore.ResponseCompression;
 using MyBlazorApp.Models;
+using MyBlazorApp.Utils;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Authenticators;
-using RestSharp.Serializers.NewtonsoftJson;
 
 namespace MyBlazorApp.Components.Pages
 {
-    public partial class ViewTask
+    public partial class ViewTask(RequestUtil tku)
     {
 
-        [Inject]
-        private ProtectedSessionStorage PSS { get; set; } = default!;
-
-        [Parameter]
-        public int TaskId { get; set; }
+        [Parameter] public int TaskId { get; set; }
 
         private TaskResponse? MyTask { get; set; }
 
         private List<UserResponse> Users { get; set; } = [];
 
-        public List<UserResponse> Issuers { get; set; } = [];
+        private List<UserResponse> Issuers { get; set; } = [];
 
-        private bool OpenModal { get; set; } = false;
+        private List<CommentModel> Comments { get; set; } = [];
 
         protected override async Task OnInitializedAsync()
         {
             await FetchTask();
             await FetchUsers();
             await FetchIssuers();
+            await FetchComments();
         }
 
         private async Task FetchTask()
         {
-            var apiUrl = "https://localhost:7049";
-            var token = await PSS.GetAsync<string>("authToken");
-            var authenticator = new JwtAuthenticator(token.Value!);
-            var clientOptions = new RestClientOptions(apiUrl) { Authenticator = authenticator };
-            var restClient = new RestClient(clientOptions, configureSerialization: c => c.UseNewtonsoftJson());
+            var restClient = await tku.ConfigAuthorizationBeforeRequest();
             var req = new RestRequest("/MyTasks/GetTasksFiltered", Method.Get);
             req.AddQueryParameter("taskID", TaskId);
             var res = await restClient.GetAsync(req);
 
-            if (res.IsSuccessful && res.Content != null)
+            if (res is { IsSuccessful: true, Content: not null })
             {
                 MyTask = JsonConvert.DeserializeObject<List<TaskResponse>>(res.Content)?.FirstOrDefault();
             }
@@ -53,11 +43,7 @@ namespace MyBlazorApp.Components.Pages
 
         private async Task FetchUsers()
         {
-            var apiUrl = "https://localhost:7049";
-            var token = await PSS.GetAsync<string>("authToken");
-            var authenticator = new JwtAuthenticator(token.Value!);
-            var clientOptions = new RestClientOptions(apiUrl) { Authenticator = authenticator };
-            var restClient = new RestClient(clientOptions, configureSerialization: c => c.UseNewtonsoftJson());
+            var restClient = await tku.ConfigAuthorizationBeforeRequest();
             var request = new RestRequest("/User/listUsers", Method.Get);
             var response = await restClient.GetAsync<List<UserResponse>>(request);
             if (response != null)
@@ -68,13 +54,9 @@ namespace MyBlazorApp.Components.Pages
 
         private async Task FetchIssuers()
         {
-            var apiUrl = "https://localhost:7049";
-            var token = await PSS.GetAsync<string>("authToken");
-            var authenticator = new JwtAuthenticator(token.Value!);
-            var clientOptions = new RestClientOptions(apiUrl) { Authenticator = authenticator };
-            var client = new RestClient(clientOptions, configureSerialization: c => c.UseNewtonsoftJson());
+            var restClient = await tku.ConfigAuthorizationBeforeRequest();
             var request = new RestRequest("/User/listIssuers", Method.Get);
-            var response = await client.GetAsync<List<UserResponse>>(request);
+            var response = await restClient.GetAsync<List<UserResponse>>(request);
             if (response != null)
             {
                 Issuers = response;
@@ -82,6 +64,27 @@ namespace MyBlazorApp.Components.Pages
             else
             {
                 Console.WriteLine("Failed to fetch issuers.");
+            }
+        }
+        
+        private async Task Rerender(bool b)
+        {
+            await FetchComments();
+            StateHasChanged();
+        }
+
+        private async Task FetchComments()
+        {
+            var restClient = await tku.ConfigAuthorizationBeforeRequest();
+            var request = new RestRequest($"/Comments/GetCommentsByTask/{TaskId}", Method.Get);
+            var response = await restClient.GetAsync<List<CommentModel>>(request);
+            if (response != null)
+            {
+                Comments = response;
+            }
+            else
+            {
+                Console.WriteLine("Failed to fetch comments.");
             }
         }
     }

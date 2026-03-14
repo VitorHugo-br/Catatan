@@ -1,22 +1,14 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+using MyBlazorApp.Utils;
 
 namespace MyBlazorApp.Components.Layout
 {
-    public partial class MainLayout(IJSRuntime JS) : LayoutComponentBase
+    public partial class MainLayout(RequestUtil requestUtil, NavigationManager nav) : LayoutComponentBase
     {
-
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
+            var token = await requestUtil.GetTokenFromSessionStorage();
+            if (token.Value is null) nav.NavigateTo("/");
         }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender) {
-                var token = await JS.InvokeAsync<string>("localStorage.getItem", "authToken");
-            }
-
-        }
-            
     }
 }
