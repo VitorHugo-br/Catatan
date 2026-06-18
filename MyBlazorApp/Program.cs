@@ -1,9 +1,18 @@
+using MudBlazor;
 using MyBlazorApp.Components;
 using MyBlazorApp.Utils;
+using MudBlazor.Services;
+using MyBlazorApp.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddHttpClientConfig();
+
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomRight;
+    config.SnackbarConfiguration.PreventDuplicates = true;
+});
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
@@ -11,7 +20,6 @@ builder.Services.AddScoped<RequestUtil>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);

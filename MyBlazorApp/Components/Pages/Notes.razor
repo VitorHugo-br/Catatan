@@ -8,7 +8,8 @@
 
             <label class="form-label w-100 text-lg-start d-flex flex-column">
                 TaskID:
-                <InputText @bind-Value="SearchNoteModel.TaskID" type="number" class="form-control W-100 d-inline-block" min="0" />
+                <InputText @bind-Value="SearchNoteModel.TaskID" type="number" class="form-control W-100 d-inline-block"
+                           min="0"/>
             </label>
 
             <label class="form-label w-100 text-lg-start d-flex flex-column">
@@ -46,19 +47,20 @@
 
             <label class="form-label w-100 text-lg-start d-flex flex-column">
                 Created At:
-                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.CreatedAt" />
+                <input type="datetime-local" class="form-control W-100 d-inline-block"
+                       @bind="SearchNoteModel.CreatedAt"/>
             </label>
 
             <label class="form-label w-100 text-lg-start d-flex flex-column">
                 Due Date:
-                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.DueDate" />
+                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.DueDate"/>
             </label>
 
             <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Search</button>
         </EditForm>
     </div>
     <div class="container task-grid">
-        @if (Tasks != null && Tasks.Any())
+        @if (Tasks.Any())
         {
             @foreach (var note in Tasks)
             {
@@ -72,7 +74,7 @@
                           CreatedAt="@note.CreatedAt"
                           DueDate="@note.DueDate"
                           Description="@note.Description"
-                          StartDate="@note.StartDate" />
+                          StartDate="@note.StartDate"/>
             }
         }
         else
@@ -80,9 +82,12 @@
             <div class="empty-state">
                 <div class="empty-state__icon-wrapper">
                     <svg class="empty-state__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.3" />
-                        <path d="M20 24h24M20 32h16M20 40h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5" />
-                        <path d="M44 38l6 6m0 0l-6 6m6-6H38" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4" />
+                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"
+                                opacity="0.3"/>
+                        <path d="M20 24h24M20 32h16M20 40h10" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" opacity="0.5"/>
+                        <path d="M44 38l6 6m0 0l-6 6m6-6H38" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
                     </svg>
                     <div class="empty-state__pulse"></div>
                 </div>
@@ -91,5 +96,6 @@
             </div>
         }
     </div>
+    <PageSelector TotalPages="@_totalPages" OnPageChanged="Callback"/>
 </section>
 

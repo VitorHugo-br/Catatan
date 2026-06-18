@@ -13,9 +13,12 @@ namespace MyBlazorApp.Components.Pages
         [Inject] private ProtectedSessionStorage Pss { get; set; } = null!;
 
         [Parameter] public SearchNoteModel SearchNoteModel { get; set; } = new();
+        
         private List<TaskResponse> Tasks { get; set; } = [];
         private List<UserResponse> Issuers { get; set; } = [];
         private List<UserResponse> Users { get; set; } = [];
+        
+        private int _totalPages;
 
         private string _token = string.Empty;
 
@@ -47,7 +50,7 @@ namespace MyBlazorApp.Components.Pages
             var response = await client.GetAsync<List<UserResponse>>(request);
             if (response != null)
             {
-                Users = response;
+                Users = response.OrderBy(u => u.Name).ToList();
             }
             else
             {
@@ -87,10 +90,11 @@ namespace MyBlazorApp.Components.Pages
             };
             var client = new RestClient(clientOptions, configureSerialization: c => c.UseNewtonsoftJson());
             var request = new RestRequest("/MyTasks/GetTasks");
-            var response = await client.GetAsync<List<TaskResponse>>(request);
+            var response = await client.GetAsync<PagedResponse<TaskResponse>>(request);
             if (response != null)
             {
-                Tasks = response;
+                _totalPages = response.TotalPages;
+                Tasks = response.Items;
             }
             else
             {
@@ -140,6 +144,20 @@ namespace MyBlazorApp.Components.Pages
             {
                 Console.WriteLine("Failed to fetch filtered tasks.");
             }
+        }
+
+        private async Task Callback(int obj)
+        {
+           var conf = await tku.ConfigAuthorizationBeforeRequest();
+           if (conf is null) return;
+           var request = new RestRequest("/MyTasks/GetTasks");
+           request.AddQueryParameter("page", obj);
+           var response = await conf.GetAsync<PagedResponse<TaskResponse>>(request);
+           if (response != null)
+           {
+               Tasks = response.Items;
+           }
+           
         }
     }
 }

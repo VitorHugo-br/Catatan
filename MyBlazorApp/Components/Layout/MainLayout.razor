@@ -1,16 +1,39 @@
 ﻿@inherits LayoutComponentBase
 
+
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu/>
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <NavLink class="btn btn-primary" href="/new-task">Add Task</NavLink>
+        <div class="top-row px-4 gap-1">
+            <MudButton
+                Color="Color.Success"
+                @onclick="AdicionarTarefa"
+                StartIcon="@Icons.Material.Filled.Add"
+                Variant="Variant.Filled"
+                Style="display: flex; align-items: center; justify-content: center">
+                <div style="position: relative; top: 2px;">
+                    Tarefa
+                </div>
+            </MudButton>
+            <MudButton
+                Color="Color.Error"
+                @onclick="Sair"
+                Variant="Variant.Filled"
+                StartIcon="@Icons.Material.Filled.ExitToApp">
+                <div style="position: relative; top: 2px;">
+                    Sair
+                </div>
+            </MudButton>
         </div>
 
         <article class="content px-4">
+            <MudThemeProvider/>
+            <MudPopoverProvider/>
+            <MudDialogProvider/>
+            <MudSnackbarProvider/>
             @Body
         </article>
     </main>

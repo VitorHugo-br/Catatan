@@ -1,0 +1,32 @@
+﻿@page "/Profile"
+@rendermode InteractiveServer
+
+<main class="profile-container">
+    <div class="profile-container-icon">
+        <div class="icon">M</div>
+    </div>
+    <div class="profile-container-info">
+        <EditForm Model="piModel" style=" gap: 1rem; position: relative; display: flex; flex-direction: column; width: 100%;">
+            <MudTextField T="string" @bind="piModel.Name" Label="Nome de Usuário"></MudTextField>
+            <MudTextField T="string" @bind="piModel.Email" Label="Email"></MudTextField>
+            <MudButton
+                ButtonType="ButtonType.Submit"
+                Variant="Variant.Filled"
+                Color="Color.Success"
+                EndIcon="@Icons.Material.Filled.Save"
+                FullWidth="true">
+                Salvar
+            </MudButton>
+        </EditForm>
+        <MudButton
+            Variant="Variant.Outlined"
+            Color="Color.Error"
+            StartIcon="@Icons.Material.Filled.Delete"
+            @onclick="ExcluirConta"
+            FullWidth="true"
+            >
+            Excluir conta
+        </MudButton>
+    </div>
+</main>
+
