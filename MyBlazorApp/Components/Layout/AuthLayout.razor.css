@@ -11,9 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(to right top, #230537, #2e214e, #3a3a64, #495379, #5d6d8c);
-    color: white;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #120f1a;
 }
 
 .icon {

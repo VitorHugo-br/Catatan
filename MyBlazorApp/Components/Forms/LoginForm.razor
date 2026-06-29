@@ -1,0 +1,37 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+
+<MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors" OnEnterPressed="(() => _form.ValidateAsync())" Spacing="6">
+
+    <div>
+        <label>Email</label>
+        <MudTextField T="string"
+                      @bind-Value="@_email"
+                      InputType="InputType.Email"
+                      Required="true"
+                      RequiredError="Email é obrigatório!"
+                      Validation="@(new EmailAddressAttribute { ErrorMessage = @"Endereço de email inválido!" })" />
+    </div>
+
+    <div>
+        <label>Senha</label>
+        <MudTextField T="string"
+                      @bind-Value="@_password"
+                      InputType="@_inputType"
+                      Adornment="Adornment.End"
+                      AdornmentColor="Color.Primary"
+                      AdornmentIcon="@_iconeVisibilidadeSenha"
+                      OnAdornmentClick="AlternarVisibilidadeSenha"
+                      Required="true"
+                      RequiredError="Senha é obrigatório!" />
+    </div>
+
+    <div class="esqueceu-a-senha">
+        <a href="#">Esqueceu a senha?</a>
+    </div>
+
+    <div class="botoes">
+        <MudButton Variant="Variant.Filled" Size="Size.Large" FullWidth Style="@("background: #7C3AED; color: white")" OnClick="ValidarLoginAsync">Entrar</MudButton>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Tertiary">Criar Conta</MudButton>
+    </div>
+</MudForm>

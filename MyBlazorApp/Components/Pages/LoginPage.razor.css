@@ -1,0 +1,96 @@
+/* CSS for LoginForm component */
+.card-central {
+    width: 60%;
+    height: 60%;
+    border: 1.5px solid rgba(124,58,237,0.22);
+    background: #1c1729;
+    border-radius: 18px;
+    display: flex;
+}
+
+.painel-esquerda {
+    width: 45%;
+    border-right: 1.5px solid rgba(124,58,237,0.22);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background: linear-gradient(145deg, rgb(42, 31, 61) 0%, rgb(26, 18, 40) 100%);
+    border-radius: 18px 0px 0px 18px;
+}
+
+.icone-titulo {
+    display: flex;
+    width: 100%;
+    gap: .5rem;
+}
+
+    .icone-titulo h2 {
+        color: white;
+        font-family: 'JetBrains Mono';
+    }
+
+
+.bem-vindo {
+    font-family: 'JetBrains Mono';
+    color: white;
+}
+
+    .bem-vindo div {
+        font-size: 20px;
+        color: rgb(124, 58, 237);
+        margin-bottom: 12px;
+    }
+
+    .bem-vindo h1 {
+        font-weight: bold;
+    }
+
+        .bem-vindo h1 span {
+            color: rgb(124, 58, 237);
+        }
+
+    .bem-vindo p {
+        color: rgb(124, 110, 160);
+        font-size: 13px;
+        font-family: "Inter", sans-serif;
+    }
+
+.versao {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: rgb(58, 45, 85);
+    margin-top: 24px;
+}
+
+.painel-direita {
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.titulo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+    .titulo div {
+        height: 1px;
+        flex: 1 1 0%;
+        background: rgba(124, 58, 237, 0.18);
+    }
+
+    .titulo span {
+        font-size: 18px;
+        color: rgb(74, 61, 98);
+        font-family: 'JetBrains Mono', monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.25rem;
+    }

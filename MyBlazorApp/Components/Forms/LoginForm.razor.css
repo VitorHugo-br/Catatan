@@ -1,0 +1,32 @@
+/* CSS for LoginForm component */
+.esqueceu-a-senha {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+    .esqueceu-a-senha a {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 16px;
+        text-decoration: none;
+        color: rgb(74, 61, 98)
+    }
+
+    .esqueceu-a-senha a:hover {
+        color: rgb(124, 58, 237);
+        transition-duration: 500ms;
+    }
+
+.botoes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
+label {
+    font-family: 'JetBrains Mono';
+    font-size: 16px;
+    color: #7C3AED ;
+}

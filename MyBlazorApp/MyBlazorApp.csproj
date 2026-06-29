@@ -13,4 +13,8 @@
     <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="113.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\fonts\" />
+  </ItemGroup>
+
 </Project>

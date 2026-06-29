@@ -7,7 +7,7 @@ using RestSharp.Serializers.NewtonsoftJson;
 
 namespace MyBlazorApp.Components.Pages
 {
-    public partial class LoginForm
+    public partial class LoginPage
     {
         private readonly LoginFormModel _loginFormModel = new();
 

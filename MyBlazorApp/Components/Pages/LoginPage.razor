@@ -1,0 +1,34 @@
+﻿@page "/"
+@using MyBlazorApp.Components.Forms
+@rendermode InteractiveServer
+@layout AuthLayout
+
+<PageTitle>Catatan - Login</PageTitle>
+
+<main class="card-central">
+    <div class="painel-esquerda">
+        <div class="icone-titulo">
+            <MudIcon Icon="@Icons.Material.Filled.StickyNote2" Title="Catatan" Color="Color.Primary" Size="Size.Large" />
+            <h2>Catatan</h2>
+        </div>
+        <div class="bem-vindo">
+            <div>Acesse sua conta</div>
+            <h1>
+                Bem-Vindo
+                <span>de volta.</span>
+            </h1>
+            <p>Acesse sua conta para continuar.<br />Dados protegidos com criptografia de ponta a ponta.</p>
+        </div>
+        <div class="versao">
+            V1.0.0 - @DateTime.Today.Year
+        </div>
+    </div>
+    <div class="painel-direita">
+        <div class="titulo">
+            <div></div>
+            <span>Autenticar</span>
+            <div></div>
+        </div>
+        <LoginForm />
+    </div>
+</main>
