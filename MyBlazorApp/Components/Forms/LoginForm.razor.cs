@@ -1,11 +1,17 @@
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor;
-using MyBlazorApp.Models;
 
 namespace MyBlazorApp.Components.Forms;
 
 public partial class LoginForm
 {
+    [Parameter] public EventCallback<bool> OnRegisterClicked { get; set; }
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+    [Inject] private ProtectedSessionStorage? Pss { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+
     private bool _success;
     private MudForm _form;
     private string _email = string.Empty;
@@ -13,14 +19,14 @@ public partial class LoginForm
     private string[] _errors = [];
 
     private bool mostrarSenha;
-    private InputType _inputType => mostrarSenha ? InputType.Text : InputType.Password;
-    private string _iconeVisibilidadeSenha => mostrarSenha ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+    private InputType InputType => mostrarSenha ? InputType.Text : InputType.Password;
+    private string IconeVisibilidadeSenha => mostrarSenha ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
 
     private Task<string> ValidarLoginAsync()
     {
         if (string.IsNullOrWhiteSpace(_email) || string.IsNullOrWhiteSpace(_password))
         {
-            _errors = new[] { "Email and password are required." };
+            _errors = ["Email and password are required."];
             return Task.FromResult(string.Empty);
         }
         // Here you can add more complex validation logic if needed
@@ -29,5 +35,8 @@ public partial class LoginForm
     }
 
     private void AlternarVisibilidadeSenha() => mostrarSenha = !mostrarSenha;
+
+    private async Task MudarPagina() => await OnRegisterClicked.InvokeAsync(true);
+    
 
 }

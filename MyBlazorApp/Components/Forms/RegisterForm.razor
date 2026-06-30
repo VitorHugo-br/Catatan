@@ -1,0 +1,52 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+<MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors" OnEnterPressed="(() => _form.ValidateAsync())" Spacing="3">
+
+    <div>
+        <label>Nome</label>
+        <MudTextField T="string"
+                      @bind-Value="@_name"
+                      Required="true"
+                      RequiredError="Nome é obrigatório!" />
+    </div>
+
+    <div>
+        <label>Email</label>
+        <MudTextField T="string"
+                      @bind-Value="@_email"
+                      InputType="InputType.Email"
+                      Required="true"
+                      RequiredError="Email é obrigatório!"
+                      Validation="@(new EmailAddressAttribute { ErrorMessage = @"Endereço de email inválido!" })" />
+    </div>
+
+    <div>
+        <label>Senha</label>
+        <MudTextField T="string"
+                      @bind-Value="@_password"
+                      InputType="InputType.Password"
+                      Adornment="Adornment.End"
+                      AdornmentColor="Color.Primary"
+                      AdornmentIcon="@Icons.Material.Filled.Lock"
+                      Required="true"
+                      RequiredError="Senha é obrigatório!"
+                      Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" />
+    </div>
+
+    <div>
+        <label>Confirmar Senha</label>
+        <MudTextField T="string"
+                      InputType="InputType.Password"
+                      Adornment="Adornment.End"
+                      AdornmentColor="Color.Primary"
+                      AdornmentIcon="@Icons.Material.Filled.Lock"
+                      Required="true"
+                      RequiredError="Confirmar a senha é obrigatório!"
+                      Validation="@(new Func<string, string?>(PasswordMatch))" />
+    </div>
+
+    <div class="botoes">
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Primary" OnClick="MudarPagina">Entrar</MudButton>
+        <MudButton Variant="Variant.Filled" Size="Size.Large" FullWidth Color="Color.Tertiary" Disabled="@(!_success)" OnClick="MudarPagina">Criar Conta</MudButton>
+    </div>
+</MudForm>

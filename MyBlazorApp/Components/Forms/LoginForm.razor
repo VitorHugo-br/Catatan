@@ -3,7 +3,7 @@
 
 <MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors" OnEnterPressed="(() => _form.ValidateAsync())" Spacing="6">
 
-    <div>
+    <div class="email">
         <label>Email</label>
         <MudTextField T="string"
                       @bind-Value="@_email"
@@ -17,10 +17,10 @@
         <label>Senha</label>
         <MudTextField T="string"
                       @bind-Value="@_password"
-                      InputType="@_inputType"
+                      InputType="@InputType"
                       Adornment="Adornment.End"
                       AdornmentColor="Color.Primary"
-                      AdornmentIcon="@_iconeVisibilidadeSenha"
+                      AdornmentIcon="@IconeVisibilidadeSenha"
                       OnAdornmentClick="AlternarVisibilidadeSenha"
                       Required="true"
                       RequiredError="Senha é obrigatório!" />
@@ -31,7 +31,7 @@
     </div>
 
     <div class="botoes">
-        <MudButton Variant="Variant.Filled" Size="Size.Large" FullWidth Style="@("background: #7C3AED; color: white")" OnClick="ValidarLoginAsync">Entrar</MudButton>
-        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Tertiary">Criar Conta</MudButton>
+        <MudButton Variant="Variant.Filled" Size="Size.Large" FullWidth Style="@("background: #7C3AED; color: white")" Disabled="@(!_success)" OnClick="ValidarLoginAsync">Entrar</MudButton>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Tertiary" OnClick="MudarPagina">Criar Conta</MudButton>
     </div>
 </MudForm>

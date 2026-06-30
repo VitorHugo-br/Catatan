@@ -1,4 +1,4 @@
-﻿*{
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -12,18 +12,53 @@
     justify-content: center;
     align-items: center;
     background: #120f1a;
+    position: relative;
+    overflow: hidden;
 }
 
-.icon {
-    width: 8rem;
-    height: 8rem;
-    user-select: none;
+    /* Grade de pontos */
+    .auth-layout::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, rgba(124, 58, 237, 0.18) 1px, transparent 1px);
+        background-size: 32px 32px;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Orbes de luz */
+    .auth-layout::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 400px 400px at 0% 0%, rgba(124, 58, 237, 0.09) 0%, transparent 70%), radial-gradient(ellipse 350px 350px at 100% 100%, rgba(100, 40, 200, 0.09) 0%, transparent 70%);
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    /* Garante que o @Body fique acima dos elementos decorativos */
+    .auth-layout > :not(.auth-layout::before):not(.auth-layout::after) {
+        position: relative;
+        z-index: 1;
+    }
+
+.auth-deco {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 4px;
+    z-index: 0;
+    pointer-events: none;
 }
 
-.betania-patmos-regular {
-    font-family: "Betania Patmos", cursive;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 70px;
-    user-select: none;
+.auth-deco--tl {
+    top: 40px;
+    right: 60px;
+}
+
+.auth-deco--br {
+    bottom: 50px;
+    left: 50px;
 }

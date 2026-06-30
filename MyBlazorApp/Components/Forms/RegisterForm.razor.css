@@ -1,0 +1,15 @@
+/* CSS for LoginForm component */
+
+.botoes {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
+label {
+    font-family: 'JetBrains Mono';
+    font-size: 16px;
+    color: #7C3AED;
+}

@@ -12,10 +12,10 @@
         color: rgb(74, 61, 98)
     }
 
-    .esqueceu-a-senha a:hover {
-        color: rgb(124, 58, 237);
-        transition-duration: 500ms;
-    }
+        .esqueceu-a-senha a:hover {
+            color: rgb(124, 58, 237);
+            transition-duration: 500ms;
+        }
 
 .botoes {
     display: flex;
@@ -28,5 +28,9 @@
 label {
     font-family: 'JetBrains Mono';
     font-size: 16px;
-    color: #7C3AED ;
+    color: #7C3AED;
+}
+
+.email {
+    margin-top: 1rem;
 }

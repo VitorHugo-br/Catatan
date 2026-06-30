@@ -1,7 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="auth-layout">
-    <MudThemeProvider />
-    <MudSnackbarProvider/>
+    <MudThemeProvider IsDarkMode="true" />
+    <MudSnackbarProvider />
+    <div class="auth-deco auth-deco--tl" aria-hidden="true"></div>
+    <div class="auth-deco auth-deco--br" aria-hidden="true"></div>
     @Body
 </div>

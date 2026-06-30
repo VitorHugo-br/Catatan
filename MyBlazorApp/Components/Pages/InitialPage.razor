@@ -26,9 +26,16 @@
     <div class="painel-direita">
         <div class="titulo">
             <div></div>
-            <span>Autenticar</span>
+            <span>@Titulo</span>
             <div></div>
         </div>
-        <LoginForm />
+        @if (EhLogin)
+        {
+            <LoginForm OnRegisterClicked="AlternarLoginCadastro" />
+        }
+        else
+        {
+            <RegisterForm OnLoginClicked="AlternarLoginCadastro" />
+        }
     </div>
 </main>
