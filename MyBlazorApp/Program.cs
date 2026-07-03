@@ -17,6 +17,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<RequestUtil>();    
+builder.Services.AddScoped<LocalStorageService>();
 
 var app = builder.Build();
 

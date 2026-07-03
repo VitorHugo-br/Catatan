@@ -2,48 +2,49 @@
 
 <PageTitle>Catatan - Home</PageTitle>
 
-<section class="hero">
-    <div class="hero-inner">
-        <div class="hero-content">
-            <h1 class="hero-title">Organize your tasks.<br/> Capture your ideas.</h1>
-            <p class="subtitle">Fast, simple and beautiful notes and task manager for your day-to-day.</p>
-
-            <div class="hero-ctas">
-                <NavLink class="btn btn-primary" href="/register">Get Started</NavLink>
-                <NavLink class="btn btn-outline-secondary" href="/notes">View Notes</NavLink>
-            </div>
-        </div>
-
-        <div class="cards-preview" aria-hidden="true">
-            <article class="card card-1">
-                <h3>Grocery list</h3>
-                <p>Buy milk, eggs and coffee.</p>
-            </article>
-
-            <article class="card card-2">
-                <h3>Project plan</h3>
-                <p>Outline milestones and deadlines.</p>
-            </article>
-
-            <article class="card card-3">
-                <h3>Ideas</h3>
-                <p>Capture spontaneous ideas quickly.</p>
-            </article>
-        </div>
-    </div>
-</section>
-
-<section class="features">
-    <div class="feature">
-        <h4>Quick notes</h4>
-        <p>Save notes instantly with a clean editor.</p>
-    </div>
-    <div class="feature">
-        <h4>Sync &amp; Secure</h4>
-        <p>Sync across devices and keep your data safe.</p>
-    </div>
-    <div class="feature">
-        <h4>Organize</h4>
-        <p>Labels, priorities and reminders to stay on track.</p>
-    </div>
-</section>
+<main class="home-container">
+    <MudGrid>
+        <MudItem xs="3">
+                <MudPaper Height="100%">
+                   <MudChart ChartType="ChartType.Pie"
+                              Style="@("padding: 1rem;")"
+                              MatchBoundsToSize
+                              ChartSeries="@DonutChartData.AsChartDataSet()"
+                              ChartLabels="@DonutChartLabels">
+                    </MudChart>
+                </MudPaper>
+        </MudItem>
+        <MudItem xs="9">
+            <MudPaper Height="27rem">
+                <MudChart ChartType="ChartType.Bar" 
+                          ChartSeries="@_series" 
+                          @bind-SelectedIndex="_index" 
+                          ChartLabels="@_xAxisLabels" 
+                          ChartOptions="_axisChartOptions"
+                          Style="@("padding: 1rem;")"
+                          MatchBoundsToSize/>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12">
+            <MudPaper Height="24rem">
+                <MudDataGrid Items="@employees" Filterable="false" SortMode="@SortMode.None" Groupable="false">
+                    <Columns>
+                        <PropertyColumn Property="x => x.Name" />
+                        <PropertyColumn Property="x => x.Position" />
+                        <PropertyColumn Property="x => x.YearsEmployed" Title="Years Employed" />
+                        <PropertyColumn Property="x => x.Salary" Format="C" />
+                        <PropertyColumn Property="x => x.Salary * x.YearsEmployed" Title="Total Earned" Format="C" />
+                        <TemplateColumn CellClass="d-flex justify-end">
+                            <CellTemplate>
+                                <MudStack Row>
+                                    <MudRating Size="@Size.Small" SelectedValue="@context.Item.Rating" />
+                                    <MudButton Size="@Size.Small" Variant="@Variant.Filled" Color="@Color.Primary">Hire</MudButton>
+                                </MudStack>
+                            </CellTemplate>
+                        </TemplateColumn>
+                    </Columns>
+                </MudDataGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</main>

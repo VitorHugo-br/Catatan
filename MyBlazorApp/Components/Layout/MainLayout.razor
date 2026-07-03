@@ -1,43 +1,55 @@
 ﻿@inherits LayoutComponentBase
 
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu/>
+<MudDrawerContainer Class="mud-height-full">
+    <MudDrawer @bind-Open="@_open"
+               Fixed="false"
+               Elevation="1"
+               Variant="@DrawerVariant.Mini"
+               OpenMiniOnHover
+               Breakpoint="Breakpoint.None">
+        <MudNavMenu>
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.StickyNote2">
+                
+            </MudNavLink>
+            <MudDivider />
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Home" OnClick="@(() => NavegarPara("Home"))">Home</MudNavLink>
+            <MudDivider />
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.LibraryBooks" OnClick="@(() => NavegarPara("Notes"))">Chamados</MudNavLink>
+            <MudDivider />
+        </MudNavMenu>
+    </MudDrawer>
+
+    <div class="mud-height-full">
+        <MudToolBar>
+            <MudTextField T="string"
+                          @bind-Value="@NumeroChamado"
+                          Label="Numero do chamado"
+                          Clearable
+                          Sizing="InputSizing.Fixed"
+                          Style="@("width: 25%;")"
+                          Adornment="Adornment.End"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          AdornmentColor="Color.Inherit"
+                          OnAdornmentClick="BuscarChamado" />
+            <MudSpacer />
+            <MudSwitch @bind-Value="@_modoEscuro"
+                       @bind-Value:after="SaveTheme"
+                       ThumbIcon="@ModoEscuroIcone"
+                       ThumbIconColor="@(_modoEscuro == true ? Color.Warning : Color.Dark)"/>
+            <MudIconButton Icon="@Icons.Material.Outlined.Add" OnClick="AdicionarTarefa" />
+            <MudIconButton Icon="@Icons.Material.Outlined.PeopleAlt" />
+            <MudIconButton Icon="@Icons.Material.Outlined.ExitToApp" Color="Color.Error" OnClick="Sair" />
+        </MudToolBar>
+        <MudDivider />
+        <MudThemeProvider IsDarkMode="@_modoEscuro" />
+        <MudPopoverProvider />
+        <MudDialogProvider />
+        <MudSnackbarProvider />
+        @Body
     </div>
 
-    <main>
-        <div class="top-row px-4 gap-1">
-            <MudButton
-                Color="Color.Success"
-                @onclick="AdicionarTarefa"
-                StartIcon="@Icons.Material.Filled.Add"
-                Variant="Variant.Filled"
-                Style="display: flex; align-items: center; justify-content: center">
-                <div style="position: relative; top: 2px;">
-                    Tarefa
-                </div>
-            </MudButton>
-            <MudButton
-                Color="Color.Error"
-                @onclick="Sair"
-                Variant="Variant.Filled"
-                StartIcon="@Icons.Material.Filled.ExitToApp">
-                <div style="position: relative; top: 2px;">
-                    Sair
-                </div>
-            </MudButton>
-        </div>
-
-        <article class="content px-4">
-            <MudThemeProvider/>
-            <MudPopoverProvider/>
-            <MudDialogProvider/>
-            <MudSnackbarProvider/>
-            @Body
-        </article>
-    </main>
-</div>
+</MudDrawerContainer>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
