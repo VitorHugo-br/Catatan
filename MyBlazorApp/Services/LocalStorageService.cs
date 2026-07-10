@@ -1,6 +1,7 @@
 ﻿using Microsoft.JSInterop;
+using MyBlazorApp.interfaces;
 
-public class LocalStorageService
+public class LocalStorageService : ILocalStorageService
 {
     private readonly IJSRuntime _jsRuntime;
 

@@ -1,101 +1,64 @@
-﻿@page "/notes"
+﻿@page "/chamados/"
 
 <PageTitle>Catatan - Notes</PageTitle>
 
-<section class="w-100 h-100 d-flex flex-column align-items-center gap-3">
-    <div class="w-100 h-100 d-flex justify-content-center align-items-center">
-        <EditForm Model="@SearchNoteModel" OnValidSubmit="@HandleSubmit" class="d-flex align-items-center gap-3">
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                TaskID:
-                <InputText @bind-Value="SearchNoteModel.TaskID" type="number" class="form-control W-100 d-inline-block"
-                           min="0"/>
-            </label>
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                User:
-                <InputSelect @bind-Value="SearchNoteModel.UserID" class="form-select W-100 d-inline-block">
-                    <option value="">All</option>
-                    @foreach (var user in Users)
-                    {
-                        <option value="@user.Id">@user.Name</option>
-                    }
-                </InputSelect>
-            </label>
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                Issuer:
-                <InputSelect @bind-Value="SearchNoteModel.TaskIssuerID" class="form-select W-100 d-inline-block">
-                    <option value="">All</option>
-                    @foreach (var issuer in Issuers)
-                    {
-                        <option value="@issuer.Id">@issuer.Name</option>
-                    }
-                </InputSelect>
-            </label>
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                Status:
-                <InputSelect @bind-Value="SearchNoteModel.Status" class="form-select W-100 d-inline-block">
-                    <option value="">All</option>
-                    <option value="0">Pending</option>
-                    <option value="1">InProgress</option>
-                    <option value="2">Completed</option>
-                    <option value="3">Delivered</option>
-                </InputSelect>
-            </label>
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                Created At:
-                <input type="datetime-local" class="form-control W-100 d-inline-block"
-                       @bind="SearchNoteModel.CreatedAt"/>
-            </label>
-
-            <label class="form-label w-100 text-lg-start d-flex flex-column">
-                Due Date:
-                <input type="datetime-local" class="form-control W-100 d-inline-block" @bind="SearchNoteModel.DueDate"/>
-            </label>
-
-            <button type="submit" class="btn btn-primary d-block mx-auto mt-3">Search</button>
-        </EditForm>
-    </div>
-    <div class="container task-grid">
-        @if (Tasks.Any())
-        {
-            @foreach (var note in Tasks)
-            {
-                var userName = Users.FirstOrDefault(u => u.Id == note.UserId)?.Name ?? "Unknown User";
-                var issuerName = Issuers.FirstOrDefault(i => i.Id == note.IssuerId)?.Name ?? "Unknown Issuer";
-                <TaskCard TaskId="@note.Id"
-                          Title="@note.Title"
-                          UserName="@userName"
-                          IssuerName="@issuerName"
-                          Status="@note.Status"
-                          CreatedAt="@note.CreatedAt"
-                          DueDate="@note.DueDate"
-                          Description="@note.Description"
-                          StartDate="@note.StartDate"/>
-            }
-        }
-        else
-        {
-            <div class="empty-state">
-                <div class="empty-state__icon-wrapper">
-                    <svg class="empty-state__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"
-                                opacity="0.3"/>
-                        <path d="M20 24h24M20 32h16M20 40h10" stroke="currentColor" stroke-width="2"
-                              stroke-linecap="round" opacity="0.5"/>
-                        <path d="M44 38l6 6m0 0l-6 6m6-6H38" stroke="currentColor" stroke-width="2"
-                              stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
-                    </svg>
-                    <div class="empty-state__pulse"></div>
-                </div>
-                <h3 class="empty-state__title">Nenhuma nota encontrada</h3>
-                <p class="empty-state__subtitle">Tente ajustar os filtros de busca ou crie uma nova nota.</p>
-            </div>
-        }
-    </div>
-    <PageSelector TotalPages="@_totalPages" OnPageChanged="Callback"/>
-</section>
-
+<MudDataGrid Items="@Data" Dense="true" Filterable="true">
+    <Columns>
+        <PropertyColumn Title="ID" Property="x => x.Id"/>
+        <PropertyColumn Title="Titulo" Property="x => x.Title" />
+        <PropertyColumn Title="Status" Property="x => x.Status" CellStyleFunc="@_cellStyleFunc" />
+        <PropertyColumn Title="Criador" Property="x => x.Issuer!.Nome" />
+        <PropertyColumn Title="Responsável" Property='x => x.User != null ? x.User.Nome : "Não Atribuido"'>
+            <CellTemplate>
+                @if(context.Item.User is null)
+                {
+                    @("Não Atribuido")
+                }
+                else
+                {
+                    @context.Item.User.Nome
+                }
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Title="Data de inicio" Property="x => x.StartDate">
+            <CellTemplate>
+                @if (context.Item.StartDate is null)
+                {
+                    @("Não Atribuido")
+                }
+                else
+                {
+                    @context.Item.StartDate
+                }
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Title="Prazo" Property="x => x.DueDate">
+            <CellTemplate>
+                @if (context.Item.DueDate is null)
+                {
+                    @("Não Atribuido")
+                }
+                else
+                {
+                    @context.Item.DueDate
+                }
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Title="Data de efetiva entrega" Property="x => x.EndDate">
+            <CellTemplate>
+                @if (context.Item.EndDate is null)
+                {
+                    @("Não Atribuido")
+                }
+                else
+                {
+                    @context.Item.EndDate
+                }
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Title="Data de Criação" Property="x => x.CreatedAt" />
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager @T="NotesPageResponse" />
+    </PagerContent>
+</MudDataGrid>

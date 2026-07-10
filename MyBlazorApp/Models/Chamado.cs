@@ -2,13 +2,13 @@
  
 namespace MyBlazorApp.Models;
  
-public class MyTask
+public class Chamado
 {
     public int Id { get; set; }
     public Guid Guid { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public Status Status { get; set; } = Status.Pending;
+    public Status Status { get; set; } = Status.Pendente;
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public DateTime? DueDate { get; set; }
@@ -19,7 +19,7 @@ public class MyTask
  
 public enum Status
 {
-    Pending = 0,
-    InProgress = 1,
-    Done = 2
+    Pendente = 0,
+    Desenvolvimento = 1,
+    Entregue = 2
 }

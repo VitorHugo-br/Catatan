@@ -8,7 +8,7 @@ using RestSharp;
 
 namespace MyBlazorApp.Components.Pages;
 
-public partial class AdicionarTarefaDialog(IMyTaskService taskService, RequestUtil tku) : ComponentBase
+public partial class AdicionarTarefaDialog(IChamadoService taskService, RequestUtil tku) : ComponentBase
 {
     [Inject] private ISnackbar Snackbar { get; set; }
     

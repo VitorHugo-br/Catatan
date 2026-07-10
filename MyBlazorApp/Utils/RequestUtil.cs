@@ -1,33 +1,33 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using MyBlazorApp.interfaces;
+using MyBlazorApp.Models.DTO;
 using RestSharp;
 using RestSharp.Authenticators;
 using RestSharp.Serializers.NewtonsoftJson;
+using System.Text.Json;
 
 namespace MyBlazorApp.Utils;
 
-public class RequestUtil(ProtectedSessionStorage protectedSessionStorage, NavigationManager nav)
+public class RequestUtil(ILocalStorageService service)
 {
-    private ProtectedSessionStorage Pss { get; set; } = protectedSessionStorage;
 
     public async Task<RestClient?> ConfigAuthorizationBeforeRequest()
     {
         const string apiUrl = "https://localhost:7049";
         var token = await GetTokenFromSessionStorage();
-        if (token.Value is null)
-        {
-            nav.NavigateTo("/", false);
-            return null;
-        };
-        var authenticator = new JwtAuthenticator(token.Value);
+        if (token is null) return null;
+        var authenticator = new JwtAuthenticator(token);
         var clientOptions = new RestClientOptions(apiUrl) { Authenticator = authenticator };
         var restClient = new RestClient(clientOptions, configureSerialization: c => c.UseNewtonsoftJson());
         return restClient;
     }
 
-    public async Task<ProtectedBrowserStorageResult<string>> GetTokenFromSessionStorage()
+    public async Task<string?> GetTokenFromSessionStorage()
     {
-        var token = await Pss.GetAsync<string>("authToken");
-        return token;
+        var token = await service.GetItemAsync("authToken");
+        if (token is null) return null;
+        var result = JsonSerializer.Deserialize<LoginResponse>(token);
+        return result?.token ?? null;
     }
 }

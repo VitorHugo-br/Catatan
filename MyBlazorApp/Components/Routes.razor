@@ -1,6 +1,18 @@
-﻿<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+﻿@using MyBlazorApp.Services
+<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
     <Found Context="routeData">
         <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    [Parameter] public string? Jwt { get; set; }
+
+    [Inject] private TokenProvider TokenProvider { get; set; } = null!;
+
+    protected override void OnInitialized()
+    {
+        TokenProvider.Jwt = Jwt;
+    }
+}

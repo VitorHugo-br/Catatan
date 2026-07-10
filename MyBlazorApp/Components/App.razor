@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@inject MyBlazorApp.Services.TokenProvider TokenProvider
+
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -20,10 +23,19 @@
 </head>
 
 <body>
-    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" Jwt="@_jwtDoCookie" />
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="js/timer.js"></script>
 </body>
 
 </html>
+@code{
+    private string? _jwtDoCookie;
+
+    protected override void OnInitialized()
+    {
+       _jwtDoCookie = HttpContextAccessor.HttpContext?.Request.Cookies["jwt_token"];
+    }
+}

@@ -2,16 +2,17 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor;
 using MyBlazorApp.Components.Pages;
+using MyBlazorApp.interfaces;
+using MyBlazorApp.Services;
 using MyBlazorApp.Utils;
 
 namespace MyBlazorApp.Components.Layout;
 
 public partial class MainLayout(
-    RequestUtil requestUtil, 
     NavigationManager nav,
-    ProtectedSessionStorage pss,
     IDialogService dialog,
-    LocalStorageService localStorageService
+    ILocalStorageService localStorage,
+    TokenProvider tokenProvider
 ) : LayoutComponentBase
 {
 
@@ -22,17 +23,16 @@ public partial class MainLayout(
 
     private string NumeroChamado = string.Empty;
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    var token = await requestUtil.GetTokenFromSessionStorage();
-    //    if (token.Value is null) nav.NavigateTo("/");
-    //}
+    protected override async Task OnInitializedAsync()
+    {
+        if(!tokenProvider.IsAuthenticated) nav.NavigateTo("/", forceLoad: true);
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            string? darkMode = await localStorageService.GetItemAsync("darkMode");
+            string? darkMode = await localStorage.GetItemAsync("darkMode");
             if(bool.TryParse(darkMode, out bool result))
             {
                 _modoEscuro = result;
@@ -57,25 +57,16 @@ public partial class MainLayout(
        return dialog.ShowAsync<AdicionarTarefaDialog>("Adicionar tarefa.",options);
     }
 
-    private async void Sair()
-    {
-        try
-        {
-            await pss.DeleteAsync("authToken");
-            nav.NavigateTo("/");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-    }
+    private async void Sair() => nav.NavigateTo("/api/logout", forceLoad: true);
 
     private void BuscarChamado()
     {
-
+        var numero = NumeroChamado;
+        NumeroChamado = string.Empty;
+        nav.NavigateTo($"/Chamados/{numero}");
     }
 
-    private async Task SaveTheme() => await localStorageService.SetItemAsync("darkMode", _modoEscuro.ToString());
+    private async Task SaveTheme() => await localStorage.SetItemAsync("darkMode", _modoEscuro.ToString());
 
     private void NavegarPara(string pagina) => nav.NavigateTo($"{pagina}");
 }

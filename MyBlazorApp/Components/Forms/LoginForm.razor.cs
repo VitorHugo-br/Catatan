@@ -1,15 +1,14 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
+using MyBlazorApp.interfaces;
 
 namespace MyBlazorApp.Components.Forms;
 
-public partial class LoginForm
+public partial class LoginForm(IChamadoService service, IMemoryCache cache)
 {
     [Parameter] public EventCallback<bool> OnRegisterClicked { get; set; }
-
-    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-    [Inject] private ProtectedSessionStorage? Pss { get; set; }
+    [Inject] private NavigationManager Nav { get; set; } = null!;
     [Inject] private ISnackbar Snackbar { get; set; } = null!;
 
     private bool _success;
@@ -22,23 +21,30 @@ public partial class LoginForm
     private InputType InputType => mostrarSenha ? InputType.Text : InputType.Password;
     private string IconeVisibilidadeSenha => mostrarSenha ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
 
-    private Task<string> ValidarLoginAsync()
+    private async Task AutenticarLoginAsync()
     {
-        if (string.IsNullOrWhiteSpace(_email) || string.IsNullOrWhiteSpace(_password))
-        {
-            _errors = ["Email and password are required."];
-            return Task.FromResult(string.Empty);
-        }
-        
-        
+        string msgToast;
 
-        _errors = Array.Empty<string>();
-        return Task.FromResult(string.Empty);
+        var token = await service.AutenticarAsync(_email, _password);
+        if (token == null)
+        {
+            msgToast = "Erro ao autenticar. Por favor, verifique suas credenciais e tente novamente.";
+            Snackbar.Add(msgToast, Severity.Error);
+            return;
+        }
+
+        msgToast = "Login bem-sucedido!";
+        Snackbar.Add(msgToast, Severity.Success);
+
+        var code = Guid.NewGuid().ToString("N");
+        cache.Set(code, token, TimeSpan.FromSeconds(30));
+
+        Nav.NavigateTo($"/login-complete?code={code}", forceLoad: true);
     }
 
     private void AlternarVisibilidadeSenha() => mostrarSenha = !mostrarSenha;
 
     private async Task MudarPagina() => await OnRegisterClicked.InvokeAsync(true);
-    
+
 
 }

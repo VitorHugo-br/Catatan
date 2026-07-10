@@ -1,0 +1,16 @@
+﻿@page "/timer-window/{ChamadoId:int}"
+@rendermode InteractiveServer
+@layout TimerLayout
+@implements IDisposable
+
+<PageTitle>Cronômetro - Chamado #@ChamadoId.ToString("D4")</PageTitle>
+
+<div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh; font-family:sans-serif; gap:1rem;">
+    <h1 style="font-size:3rem; margin:0;">@_state.Elapsed.ToString(@"hh\:mm\:ss")</h1>
+
+    <MudIconButton Icon="@(_state.IsPaused ? Icons.Material.Filled.PlayCircle : Icons.Material.Filled.PauseCircle)"
+                   Size="Size.Large"
+                   Color="Color.Primary"
+                   OnClick="TogglePause" />
+</div>
+

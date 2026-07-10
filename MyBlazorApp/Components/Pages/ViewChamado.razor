@@ -1,0 +1,108 @@
+﻿@page "/Chamados/{ChamadoId:int}"
+@rendermode InteractiveServer
+
+@using MyBlazorApp.Extensions;
+
+<main>
+    @if (Chamado != null)
+    {
+        <div class="content">
+
+            <!-- CARD DO CHAMADO -->
+            <div class="ticket-card">
+                <div class="ticket-header">
+                    <div class="ticket-eyebrow">
+                        Chamado #@Chamado.Id.ToString("D4") • Aberto em 03/07/2026
+                        <MudIconButton Icon="@IconeTimer" Size="Size.Small" Color="Color.Primary" OnClick="@Timer"/>
+                    </div>
+                    <div class="ticket-title-row">
+                        <h1 class="ticket-title">@Chamado.Title</h1>
+                        <span class="status-badge andamento" id="statusBadge">@Chamado.Status</span>
+                    </div>
+                </div>
+
+                <div class="ticket-body">
+                    <p class="ticket-description">
+                        @Chamado.Description
+                    </p>
+
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">Solicitante</span>
+                            <span class="meta-value">
+                                <MudAvatar Color="Color.Primary" Size="Size.Small">
+                                    @Chamado.Issuer?.Nome.ToInitials()
+                                </MudAvatar>
+                                @Chamado.Issuer?.Nome
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Responsável</span>
+                            <span class="meta-value">
+                                <MudAvatar Color="Color.Primary" Size="Size.Small">
+                                    @Chamado.User?.Nome.ToInitials()
+                                </MudAvatar>
+                                @Chamado.User?.Nome
+                            </span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Data de início</span>
+                            <span class="meta-value">@Chamado.StartDate</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Prazo</span>
+                            <span class="meta-value">@Chamado.DueDate</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ticket-footer">
+                    <span>Criado em @Chamado.CreatedAt.Date.ToShortDateString() às @Chamado.CreatedAt.Hour.ToString()h</span>
+                    <span>Guid: @Chamado.Guid</span>
+                </div>
+            </div>
+
+            <!-- SEÇÃO DE COMENTÁRIOS -->
+            <div class="comments-section">
+                <h2 class="comments-title">
+                    Comentários <span class="comments-count" id="commentCount">2</span>
+                </h2>
+
+                <div class="comment-list" id="commentList">
+                    <div class="comment-item">
+                        <span class="avatar">MC</span>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">Maria Clara</span>
+                                <span class="comment-time">03/07/2026 às 09:45</span>
+                            </div>
+                            <p class="comment-text">Consigo reproduzir o erro sempre que seleciono mais de 30 dias no filtro.</p>
+                        </div>
+                    </div>
+
+                    <div class="comment-item">
+                        <span class="avatar">JP</span>
+                        <div class="comment-content">
+                            <div class="comment-header">
+                                <span class="comment-author">João Pedro</span>
+                                <span class="comment-time">04/07/2026 às 14:10</span>
+                            </div>
+                            <p class="comment-text">Identifiquei o problema na query de agregação. Já estou corrigindo, deploy previsto para amanhã.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="comment-form" id="commentForm">
+                    <span class="avatar">EU</span>
+                    <textarea id="commentInput" placeholder="Escreva um comentário..."></textarea>
+                    <button type="submit" class="btn-send">Enviar</button>
+                </form>
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div>Chamado nao encontrado</div>
+    }
+</main>

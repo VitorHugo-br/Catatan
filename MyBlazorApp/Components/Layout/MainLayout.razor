@@ -1,5 +1,9 @@
 ﻿@inherits LayoutComponentBase
 
+<MudThemeProvider IsDarkMode="true" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
 <MudDrawerContainer Class="mud-height-full">
     <MudDrawer @bind-Open="@_open"
@@ -10,12 +14,12 @@
                Breakpoint="Breakpoint.None">
         <MudNavMenu>
             <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.StickyNote2">
-                
+
             </MudNavLink>
             <MudDivider />
             <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Home" OnClick="@(() => NavegarPara("Home"))">Home</MudNavLink>
             <MudDivider />
-            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.LibraryBooks" OnClick="@(() => NavegarPara("Notes"))">Chamados</MudNavLink>
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.LibraryBooks" OnClick="@(() => NavegarPara("Chamados"))">Chamados</MudNavLink>
             <MudDivider />
         </MudNavMenu>
     </MudDrawer>
@@ -33,19 +37,20 @@
                           AdornmentColor="Color.Inherit"
                           OnAdornmentClick="BuscarChamado" />
             <MudSpacer />
-            <MudSwitch @bind-Value="@_modoEscuro"
+            @* <MudSwitch @bind-Value="@_modoEscuro"
                        @bind-Value:after="SaveTheme"
                        ThumbIcon="@ModoEscuroIcone"
-                       ThumbIconColor="@(_modoEscuro == true ? Color.Warning : Color.Dark)"/>
-            <MudIconButton Icon="@Icons.Material.Outlined.Add" OnClick="AdicionarTarefa" />
-            <MudIconButton Icon="@Icons.Material.Outlined.PeopleAlt" />
+                       ThumbIconColor="@(_modoEscuro == true ? Color.Warning : Color.Dark)"/> *@
+            <MudTooltip Text="Adicionar" Placement="Placement.Left">
+                <MudFabMenu StartIcon="@Icons.Material.Outlined.Add" Color="Color.Primary" Direction="Direction.Bottom" Size="Size.Small" IconSize="Size.Small">
+                    <MudTooltip Text="Chamado" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.StickyNote2" Color="Color.Primary" OnClick="AdicionarTarefa" /></MudTooltip>
+                    <MudTooltip Text="Grupo" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" /></MudTooltip>
+                </MudFabMenu>
+            </MudTooltip>
             <MudIconButton Icon="@Icons.Material.Outlined.ExitToApp" Color="Color.Error" OnClick="Sair" />
         </MudToolBar>
         <MudDivider />
-        <MudThemeProvider IsDarkMode="@_modoEscuro" />
-        <MudPopoverProvider />
-        <MudDialogProvider />
-        <MudSnackbarProvider />
+
         @Body
     </div>
 
