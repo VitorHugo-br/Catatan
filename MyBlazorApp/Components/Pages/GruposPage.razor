@@ -1,0 +1,39 @@
+﻿@page "/Grupos"
+@rendermode InteractiveServer
+@using Extensions;
+
+<MudGrid Justify="Justify.SpaceBetween" Class="p-4">
+    @if (Grupos != null)
+    {
+        @foreach (var Grupo in Grupos)
+        {
+            <MudItem xs="3">
+                <MudPaper Class="d-flex flex-column align-center justify-center mud-width-full py-8">
+                    <h1 class="w-100 d-flex justify-content-center">@Grupo.Nome</h1>
+                    @if (Grupo.Usuarios.Count != 0)
+                    {
+                        <MudAvatarGroup Max="5" MaxColor="Color.Primary" MaxVariant="Variant.Outlined">
+                            @foreach (var usuario in Grupo.Usuarios)
+                            {
+                                <MudAvatar Variant="Variant.Filled" Color="Color.Primary">@usuario.ToInitials()</MudAvatar>
+                            }
+                        </MudAvatarGroup>
+                    }
+                    else
+                    {
+                        <MudPaper Outlined="true" Width="70%" Class="d-flex justify-content-center align-items-center bg-danger gap-2 shadow-lg p-2">
+                           <MudIcon Icon="@Icons.Material.Sharp.Warning"/> Nenhum usuario cadastrado no grupo!
+                        </MudPaper>
+                    }
+                </MudPaper>
+            </MudItem>
+        }
+    }
+    else
+    {
+        <MudPaper>
+            Nenhum grupo cadastrado
+        </MudPaper>
+    }
+</MudGrid>
+

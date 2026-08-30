@@ -1,7 +1,9 @@
 ﻿
+using Microsoft.AspNetCore.Components.Forms;
+
 namespace MyBlazorApp.Models;
 
-public class NewTaskFormModel
+public class AdicionarChamadoFormModel
 {
     public string Title { get; set; } = string.Empty;
     
@@ -14,5 +16,7 @@ public class NewTaskFormModel
     public DateTime? DueDate { get; set; }
     
     public int IssuerId { get; set; }
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
+
+    public IReadOnlyList<IBrowserFile> Arquivos { get; set; } = [];
 }

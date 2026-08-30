@@ -1,4 +1,78 @@
-﻿.task-grid {
+.chamados-container {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+}
+
+.chamados-paper {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+::deep .chamados-datagrid {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+::deep .chamados-datagrid .mud-table-container {
+    flex: 1 1 0%;
+    min-height: 0;
+    overflow: auto;
+}
+
+::deep .chamados-datagrid th,
+::deep .chamados-datagrid td {
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}
+
+::deep .chamados-datagrid .col-id {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    width: 90px;
+    min-width: 80px;
+}
+
+::deep .chamados-datagrid .col-titulo {
+    min-width: 200px;
+    max-width: 320px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+::deep .chamados-datagrid .col-status {
+    width: 140px;
+    min-width: 120px;
+    font-weight: 500;
+    text-align: center;
+}
+
+::deep .chamados-datagrid .col-criador,
+::deep .chamados-datagrid .col-responsavel {
+    min-width: 130px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+::deep .chamados-datagrid .col-data {
+    width: 130px;
+    min-width: 110px;
+    text-align: center;
+}
+
+.task-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 1rem;

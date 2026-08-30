@@ -1,0 +1,28 @@
+﻿@using MyBlazorApp.Dto
+<MudDialog>
+    <TitleContent>Adicionar Grupo <MudIcon Icon="@Icons.Material.Outlined.PeopleAlt" /></TitleContent>
+    <DialogContent>
+        <MudForm @ref="_form" @bind-IsValid="_success" @bind-Errors="_errors" OnEnterPressed="@(() => _form.ValidateAsync())" Spacing="3">
+            <MudTextField T="string" @bind-Value="_nome" Label="Nome do grupo" Required="true" RequiredError="Nome do grupo é obrigatório!" AdornmentIcon="@Icons.Material.Filled.PeopleAlt" />
+
+            @if (_usuarios != null)
+            {
+                <MudSelect T="UsuarioDto" Label="Usuários" MultiSelection="true" @bind-SelectedValues="_usuariosSelecionados">
+                    @foreach (var usuario in _usuarios)
+                    {
+                        <MudSelectItem Value="@usuario">@usuario.Nome</MudSelectItem>
+                    }
+                </MudSelect>
+            }
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Color="Color.Success" OnClick="CriarGrupoAsync">
+            <div style="position: relative; top: 2px;">
+                Adicionar
+            </div>
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+

@@ -1,0 +1,67 @@
+﻿<MudDialog>
+    <TitleContent><strong>Criar novo chamado</strong></TitleContent>
+    <DialogContent>
+        <MudForm @ref="_form" Model="@_formModel" Validation="@(_validator.ValidateValue)" Spacing="4">
+            <MudTextField T="string" @bind-Value="_formModel.Title" Label="Titulo" Required="true" RequiredError="Titulo é obrigatório!" />
+            <MudTextField T="string" @bind-Value="_formModel.Description" Label="Descrição" Required="true" Lines="3" MaxLines="6" RequiredError="Descrição é obrigatório!" />
+            <MudFileUpload T="IReadOnlyList<IBrowserFile>" @bind-Files="_formModel.Arquivos" For="@(() => _formModel.Arquivos)" AppendMultipleFiles="true" DragAndDrop="true" @bind-Dragging="@_dragging" @bind-Dragging:after="@ClearDragClass">
+                <CustomContent>
+                    <MudPaper Height="260px" Outlined @onclick="@context.OpenFilePickerAsync" @ondragenter="@SetDragClass" Class="@_dragClass">
+                        <MudText Typo="Typo.h6">
+                            Arraste e solte arquivos aqui ou clique para pesquisar
+                        </MudText>
+
+                        <div class="flex-grow-1" style="max-height: 160px; overflow-y: auto;">
+                            @foreach (var file in context.GetFilenames())
+                            {
+                                <MudChip T="string" Color="Color.Dark" Text="@file" CloseIcon="@Icons.Material.Outlined.Close" OnClose="@(async () => await context.RemoveFileAsync(file))" tabindex="-1" />
+                            }
+                        </div>
+
+                        <MudToolBar Gutters="false" Class="d-flex justify-end align-end gap-4">
+                            <MudButton Color="Color.Primary" OnClick="@context.OpenFilePickerAsync" Variant="Variant.Filled">
+                                Procurar Arquivos
+                            </MudButton>
+                            <MudButton Color="Color.Error" Disabled="@(!context.GetFilenames().Any())" OnClick="@context.ClearAsync" Variant="Variant.Filled">
+                                Limpar
+                            </MudButton>
+                        </MudToolBar>
+                    </MudPaper>
+                </CustomContent>
+                <SelectedTemplate />
+            </MudFileUpload>
+
+            <MudTextField T="DateTime?" @bind-Value="_formModel.DueDate" Format="s" Label="Prazo" InputType="InputType.DateTimeLocal" />
+
+            <MudSelect @bind-Value="_formModel.Status" Label="Status">
+                <MudSelectItem Value="0">Pendente</MudSelectItem>
+                <MudSelectItem Value="1">Em progresso</MudSelectItem>
+                <MudSelectItem Value="2">Concluído</MudSelectItem>
+                <MudSelectItem Value="3">Entregue</MudSelectItem>
+            </MudSelect>
+
+            @if (Usuarios != null)
+            {
+                <MudSelect T="int" @bind-Value="_formModel.UserId" Label="atribuido para">
+                    @foreach (var usuario in Usuarios)
+                    {
+                        <MudSelectItem Value="usuario.Id">@usuario.Nome</MudSelectItem>
+                    }
+                </MudSelect>
+            }
+            else
+            {
+                <MudPaper Width="100%">
+                    Nenhum usuario cadastrado
+                </MudPaper>
+            }
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Success" @onclick="Submit" StartIcon="@Icons.Material.Filled.Add" Disabled="@(!_form?.IsValid ?? true)">
+            <div style="position: relative; top: 2px;">
+                Adicionar
+            </div>
+        </MudButton>
+    </DialogActions>
+</MudDialog>

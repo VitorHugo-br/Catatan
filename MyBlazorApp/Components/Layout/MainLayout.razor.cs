@@ -1,31 +1,50 @@
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.SignalR.Client;
 using MudBlazor;
-using MyBlazorApp.Components.Pages;
+using MyBlazorApp.Components.Modals;
+using MyBlazorApp.Dto;
 using MyBlazorApp.interfaces;
 using MyBlazorApp.Services;
-using MyBlazorApp.Utils;
 
 namespace MyBlazorApp.Components.Layout;
 
-public partial class MainLayout(
-    NavigationManager nav,
-    IDialogService dialog,
-    ILocalStorageService localStorage,
-    TokenProvider tokenProvider
-) : LayoutComponentBase
+public partial class MainLayout(NavigationManager nav, IDialogService dialog, ILocalStorageService localStorage, TokenProvider tokenProvider, IChamadoService chamadoService, NotificationService notificationService) : LayoutComponentBase
 {
 
     private bool _open;
 
     private bool _modoEscuro;
-    private string ModoEscuroIcone => _modoEscuro ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode;
 
-    private string NumeroChamado = string.Empty;
+    private int? chamadonumero;
+
+    public NotificacaoNovaTarefa? _ultimaNotificacao;
+
+    private List<NotificacaoNovaTarefa> Notificacoes = [];
+
+    private string NotificacaoIcone => Notificacoes is { Count: > 0} ? Icons.Material.Filled.Notifications : Icons.Material.Outlined.Notifications;
 
     protected override async Task OnInitializedAsync()
     {
-        if(!tokenProvider.IsAuthenticated) nav.NavigateTo("/", forceLoad: true);
+        var EhTokenValido = await chamadoService.ValidarTokenAsync();
+        if (!EhTokenValido)
+        {
+            nav.NavigateTo("/", forceLoad: true);
+            return;
+        }
+
+        notificationService.OnNovoChamado += HandleNovoChamado;
+
+        if (!string.IsNullOrEmpty(tokenProvider.Jwt))
+        {
+            await notificationService.IniciarConexaoAsync("https://localhost:7049", tokenProvider.Jwt);
+        }
+    }
+
+    private void HandleNovoChamado(NotificacaoNovaTarefa dados)
+    {
+        _ultimaNotificacao = dados;
+        Notificacoes.Add(dados);
+        InvokeAsync(StateHasChanged);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -33,7 +52,7 @@ public partial class MainLayout(
         if (firstRender)
         {
             string? darkMode = await localStorage.GetItemAsync("darkMode");
-            if(bool.TryParse(darkMode, out bool result))
+            if (bool.TryParse(darkMode, out bool result))
             {
                 _modoEscuro = result;
             }
@@ -44,29 +63,72 @@ public partial class MainLayout(
             StateHasChanged();
         }
     }
-    
+
     private Task<IDialogReference> AdicionarTarefa()
     {
-       var options = new DialogOptions
-       {
-           CloseButton = true, 
-           Position = DialogPosition.Center,
-           FullWidth = true,
-           
-       };
-       return dialog.ShowAsync<AdicionarTarefaDialog>("Adicionar tarefa.",options);
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            Position = DialogPosition.Center,
+            FullWidth = true,
+
+        };
+        return dialog.ShowAsync<AdicionarChamadoDialog>("Adicionar tarefa.", options);
     }
 
     private async void Sair() => nav.NavigateTo("/api/logout", forceLoad: true);
 
     private void BuscarChamado()
     {
-        var numero = NumeroChamado;
-        NumeroChamado = string.Empty;
-        nav.NavigateTo($"/Chamados/{numero}");
+        if (chamadonumero != null && chamadonumero > 0)
+        {
+            nav.NavigateTo($"/Chamados/{chamadonumero}");
+            return;
+        }
+
+    }
+
+    public Task<IDialogReference> AdicionarGrupo()
+    {
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            Position = DialogPosition.Center,
+            FullWidth = true,
+
+        };
+        return dialog.ShowAsync<AdicionarGrupoDialog>("Adicionar grupo.", options);
     }
 
     private async Task SaveTheme() => await localStorage.SetItemAsync("darkMode", _modoEscuro.ToString());
 
     private void NavegarPara(string pagina) => nav.NavigateTo($"{pagina}");
+
+    // Controle do Chat FAB e Balão de Chat
+    private bool _chatAberto;
+    private string _novaMensagemChat = string.Empty;
+    private List<ChatMessage> _mensagensChat =
+    [
+        new("TaskMan Bot", "Olá! Bem-vindo ao suporte TaskMan. Como posso ajudar você hoje?", DateTime.Now, false)
+    ];
+
+    public record ChatMessage(string Autor, string Texto, DateTime Horario, bool EnviadoPeloUsuario);
+
+    private void AlternarChat() => _chatAberto = !_chatAberto;
+
+    private void EnviarMensagemChat()
+    {
+        if (string.IsNullOrWhiteSpace(_novaMensagemChat)) return;
+
+        _mensagensChat.Add(new("Você", _novaMensagemChat.Trim(), DateTime.Now, true));
+        _novaMensagemChat = string.Empty;
+    }
+
+    private void HandleChatKeyDown(Microsoft.AspNetCore.Components.Web.KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey)
+        {
+            EnviarMensagemChat();
+        }
+    }
 }

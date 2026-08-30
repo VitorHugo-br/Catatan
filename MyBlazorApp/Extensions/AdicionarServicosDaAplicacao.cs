@@ -9,6 +9,7 @@ public static class AdicionarServicosDaAplicacao
     public static IServiceCollection AdicionarServicos(this IServiceCollection services)
     {
         services.AddScoped<RequestUtil>();
+        services.AddScoped<NotificationService>();
         services.AddScoped<ILocalStorageService, LocalStorageService>();
         services.AddSingleton<IChamadoTimerService, ChamadoTimerService>();
         return services;

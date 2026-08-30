@@ -3,6 +3,7 @@
 
 @using MyBlazorApp.Extensions;
 
+<PageTitle>Taskman - Chamado</PageTitle>
 <main>
     @if (Chamado != null)
     {
@@ -12,18 +13,18 @@
             <div class="ticket-card">
                 <div class="ticket-header">
                     <div class="ticket-eyebrow">
-                        Chamado #@Chamado.Id.ToString("D4") • Aberto em 03/07/2026
-                        <MudIconButton Icon="@IconeTimer" Size="Size.Small" Color="Color.Primary" OnClick="@Timer"/>
+                        Chamado #@Chamado.Id.ToString("D4")
+                        <MudIconButton Icon="@IconeTimer" Size="Size.Small" Color="Color.Primary" OnClick="@Timer" />
                     </div>
                     <div class="ticket-title-row">
-                        <h1 class="ticket-title">@Chamado.Title</h1>
+                        <h1 class="ticket-title">@Chamado.Titulo</h1>
                         <span class="status-badge andamento" id="statusBadge">@Chamado.Status</span>
                     </div>
                 </div>
 
                 <div class="ticket-body">
                     <p class="ticket-description">
-                        @Chamado.Description
+                        @Chamado.Descricao
                     </p>
 
                     <div class="meta-grid">
@@ -31,33 +32,56 @@
                             <span class="meta-label">Solicitante</span>
                             <span class="meta-value">
                                 <MudAvatar Color="Color.Primary" Size="Size.Small">
-                                    @Chamado.Issuer?.Nome.ToInitials()
+                                    @Chamado.Remetente.Nome.ToInitials()
                                 </MudAvatar>
-                                @Chamado.Issuer?.Nome
+                                @Chamado.Remetente.Nome
                             </span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Responsável</span>
                             <span class="meta-value">
-                                <MudAvatar Color="Color.Primary" Size="Size.Small">
-                                    @Chamado.User?.Nome.ToInitials()
-                                </MudAvatar>
-                                @Chamado.User?.Nome
+                                @if (Chamado.Responsavel != null)
+                                {
+                                    <MudAvatar Color="Color.Primary" Size="Size.Small">
+                                        @Chamado.Responsavel.Nome.ToInitials()
+                                    </MudAvatar>
+                                    @Chamado.Responsavel.Nome
+                                }
+                                else
+                                {
+                                    @("Não atribuido")
+                                }
                             </span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Data de início</span>
-                            <span class="meta-value">@Chamado.StartDate</span>
+                            <span class="meta-value">
+                                @if (Chamado.DataInicio is null)
+                                {
+                                    @("Não atribuida")
+                                }
+                                else
+                                {
+                                    @Chamado.DataInicio
+                                }
+                            </span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-label">Prazo</span>
-                            <span class="meta-value">@Chamado.DueDate</span>
+                            <span class="meta-value">@Chamado.Prazo</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Tempo total do chamado</span>
+                            <span class="meta-value">
+                                <MudIcon Icon="@Icons.Material.Filled.WatchLater" Size="Size.Medium" Color="Color.Primary"/>
+                                @Chamado.HorasGastas.ToString(@"hh\:mm\:ss")
+                            </span>
                         </div>
                     </div>
                 </div>
 
                 <div class="ticket-footer">
-                    <span>Criado em @Chamado.CreatedAt.Date.ToShortDateString() às @Chamado.CreatedAt.Hour.ToString()h</span>
+                    <span>Criado em @Chamado.CriadoEm.ToShortDateString() às @Chamado.CriadoEm.ToShortTimeString()</span>
                     <span>Guid: @Chamado.Guid</span>
                 </div>
             </div>

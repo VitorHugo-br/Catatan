@@ -1,76 +1,92 @@
-/* CSS for LoginForm component */
+/* CSS for InitialPage component */
 .card-central {
-    width: 60%;
-    height: 60%;
-    border: 1.5px solid rgba(124,58,237,0.22);
+    width: 100%;
+    max-width: 900px;
+    min-height: 520px;
+    border: 1.5px solid rgba(124, 58, 237, 0.22);
     background: #1c1729;
     border-radius: 18px;
     display: flex;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 25px rgba(124, 58, 237, 0.1);
+    overflow: hidden;
+    margin: auto;
 }
 
 .painel-esquerda {
-    width: 45%;
-    border-right: 1.5px solid rgba(124,58,237,0.22);
+    width: 42%;
+    min-width: 300px;
+    border-right: 1.5px solid rgba(124, 58, 237, 0.22);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    padding: 50px;
+    align-items: flex-start;
+    padding: 40px 36px;
     background: linear-gradient(145deg, rgb(42, 31, 61) 0%, rgb(26, 18, 40) 100%);
-    border-radius: 18px 0px 0px 18px;
+    border-radius: 18px 0 0 18px;
+    gap: 2rem;
 }
 
 .icone-titulo {
     display: flex;
+    align-items: center;
     width: 100%;
-    gap: .5rem;
+    gap: 0.75rem;
 }
 
-    .icone-titulo h2 {
-        color: white;
-        font-family: 'JetBrains Mono';
-    }
-
+.icone-titulo h2 {
+    color: white;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
 
 .bem-vindo {
-    font-family: 'JetBrains Mono';
+    font-family: 'JetBrains Mono', monospace;
     color: white;
 }
 
-    .bem-vindo div {
-        font-size: 20px;
-        color: rgb(124, 58, 237);
-        margin-bottom: 12px;
-    }
+.subtitulo-boas-vindas,
+.bem-vindo div {
+    font-size: 1.05rem;
+    color: rgb(124, 58, 237);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
 
-    .bem-vindo h1 {
-        font-weight: bold;
-    }
+.bem-vindo h1 {
+    font-weight: bold;
+    font-size: 1.85rem;
+    line-height: 1.2;
+    margin-bottom: 0.65rem;
+}
 
-        .bem-vindo h1 span {
-            color: rgb(124, 58, 237);
-        }
+.bem-vindo h1 span {
+    color: rgb(124, 58, 237);
+}
 
-    .bem-vindo p {
-        color: rgb(124, 110, 160);
-        font-size: 13px;
-        font-family: "Inter", sans-serif;
-    }
+.bem-vindo p {
+    color: rgb(124, 110, 160);
+    font-size: 0.85rem;
+    font-family: "Inter", sans-serif;
+    line-height: 1.5;
+    margin: 0;
+}
 
 .versao {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #69F0AE;
-    margin-top: 24px;
 }
 
 .painel-direita {
-    width: 100%;
-    height: 100%;
-    padding: 50px;
+    flex: 1;
+    min-width: 0;
+    padding: 40px 36px;
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    justify-content: center;
+    gap: 1.25rem;
 }
 
 .titulo {
@@ -78,19 +94,89 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .5rem;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
-    .titulo div {
-        height: 1px;
-        flex: 1 1 0%;
-        background: rgba(124, 58, 237, 0.18);
+.titulo div {
+    height: 1px;
+    flex: 1 1 0%;
+    background: rgba(124, 58, 237, 0.18);
+}
+
+.titulo span {
+    font-size: 1rem;
+    color: rgb(160, 140, 200);
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
+    white-space: nowrap;
+}
+
+/* Responsividade: Tablets e Telas Médias */
+@media (max-width: 860px) {
+    .card-central {
+        flex-direction: column;
+        max-width: 480px;
+        min-height: auto;
+    }
+
+    .painel-esquerda {
+        width: 100%;
+        min-width: unset;
+        border-right: none;
+        border-bottom: 1.5px solid rgba(124, 58, 237, 0.22);
+        border-radius: 18px 18px 0 0;
+        padding: 24px 20px;
+        gap: 1rem;
+    }
+
+    .bem-vindo div {
+        font-size: 0.95rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .bem-vindo h1 {
+        font-size: 1.45rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .bem-vindo p {
+        font-size: 0.8rem;
+    }
+
+    .versao {
+        display: none;
+    }
+
+    .painel-direita {
+        padding: 24px 20px;
+        gap: 1rem;
+    }
+}
+
+/* Responsividade: Dispositivos Móveis */
+@media (max-width: 480px) {
+    .card-central {
+        border-radius: 14px;
+        margin: 0;
+    }
+
+    .painel-esquerda {
+        padding: 18px 16px;
+        border-radius: 14px 14px 0 0;
+    }
+
+    .painel-direita {
+        padding: 18px 16px;
+    }
+
+    .icone-titulo h2 {
+        font-size: 1.25rem;
     }
 
     .titulo span {
-        font-size: 18px;
-        color: rgb(74, 61, 98);
-        font-family: 'JetBrains Mono', monospace;
-        text-transform: uppercase;
-        letter-spacing: 0.25rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.15rem;
     }
+}

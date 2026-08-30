@@ -1,4 +1,5 @@
-﻿using MyBlazorApp.Handlers;
+﻿using Microsoft.AspNetCore.Components;
+using MyBlazorApp.Handlers;
 using MyBlazorApp.interfaces;
 using MyBlazorApp.Services;
 
@@ -8,13 +9,15 @@ public static class HttpClientConfigExtension
 {
     public static IServiceCollection AddHttpClientConfig(this IServiceCollection services)
     {
-
+        //services.AddScoped<UnauthorizedRedirectHandler>();
         services.AddScoped<AuthHeaderHandler>();
 
         services.AddHttpClient<IChamadoService, ChamadoService>(client =>
         {
             client.BaseAddress = new Uri("https://localhost:7049/");
         }).AddHttpMessageHandler<AuthHeaderHandler>();
+        //.AddHttpMessageHandler<UnauthorizedRedirectHandler>()
+        //.SetHandlerLifetime(Timeout.InfiniteTimeSpan); ;
         return services;
     }
 }

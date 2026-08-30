@@ -12,19 +12,28 @@ public partial class ViewChamado(IChamadoService service, IChamadoTimerService t
 {
     [Parameter]
     public int ChamadoId { get; set; }
-    private TaskApiResponse? Chamado { get; set; }
+    private ChamadoApiResponse? Chamado { get; set; }
 
     private TimerState? _timerState;
 
     private string IconeTimer => _timerState is { IsPaused: false } ? Icons.Material.Filled.PauseCircle : Icons.Material.Filled.PlayCircle;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Chamado = await service.GetChamadoPorIdAsync(ChamadoId);
+        Chamado = await service.ObterChamadoPorIdAsync(ChamadoId);
 
         _timerState = timerService.GetState(ChamadoId);
         _timerState.OnChange += HandleTimerChange;
+        StateHasChanged();
     }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    Chamado = await service.ObterChamadoPorIdAsync(ChamadoId);
+
+    //    _timerState = timerService.GetState(ChamadoId);
+    //    _timerState.OnChange += HandleTimerChange;
+    //}
 
     private void HandleTimerChange()
     {

@@ -1,8 +1,8 @@
-﻿@using System.ComponentModel.DataAnnotations
+@using System.ComponentModel.DataAnnotations
 
-<MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors" OnEnterPressed="(() => _form.ValidateAsync())" Spacing="3">
+<MudForm @ref="_form" @bind-IsValid="@_success" @bind-Errors="@_errors" OnEnterPressed="(() => _form.ValidateAsync())" Spacing="2">
 
-    <div>
+    <div class="campo-form">
         <label>Nome</label>
         <MudTextField T="string"
                       @bind-Value="@_name"
@@ -10,7 +10,7 @@
                       RequiredError="Nome é obrigatório!" />
     </div>
 
-    <div>
+    <div class="campo-form">
         <label>Email</label>
         <MudTextField T="string"
                       @bind-Value="@_email"
@@ -20,7 +20,7 @@
                       Validation="@(new EmailAddressAttribute { ErrorMessage = @"Endereço de email inválido!" })" />
     </div>
 
-    <div>
+    <div class="campo-form">
         <label>Senha</label>
         <MudTextField T="string"
                       @bind-Value="@_password"
@@ -33,7 +33,7 @@
                       Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" />
     </div>
 
-    <div>
+    <div class="campo-form">
         <label>Confirmar Senha</label>
         <MudTextField T="string"
                       InputType="InputType.Password"
@@ -46,7 +46,7 @@
     </div>
 
     <div class="botoes">
-        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Primary" OnClick="MudarPagina">Entrar</MudButton>
         <MudButton Variant="Variant.Filled" Size="Size.Large" FullWidth Color="Color.Tertiary" Disabled="@(!_success)" OnClick="RegistrarUsuario">Criar Conta</MudButton>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" FullWidth Color="Color.Primary" OnClick="MudarPagina">Já tenho uma conta</MudButton>
     </div>
 </MudForm>

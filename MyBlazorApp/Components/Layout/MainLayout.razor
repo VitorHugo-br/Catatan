@@ -1,11 +1,11 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
 <MudThemeProvider IsDarkMode="true" />
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudDrawerContainer Class="mud-height-full">
+<MudDrawerContainer Class="app-drawer-container">
     <MudDrawer @bind-Open="@_open"
                Fixed="false"
                Elevation="1"
@@ -13,48 +13,133 @@
                OpenMiniOnHover
                Breakpoint="Breakpoint.None">
         <MudNavMenu>
-            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.StickyNote2">
-
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.StickyNote2" Disabled="true">
+                TaskMan
             </MudNavLink>
             <MudDivider />
             <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.Home" OnClick="@(() => NavegarPara("Home"))">Home</MudNavLink>
             <MudDivider />
             <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.LibraryBooks" OnClick="@(() => NavegarPara("Chamados"))">Chamados</MudNavLink>
             <MudDivider />
+            <MudNavLink Match="NavLinkMatch.All" IconColor="Color.Primary" Icon="@Icons.Material.Filled.PeopleAlt" OnClick="@(() => NavegarPara("Grupos"))">Grupos</MudNavLink>
         </MudNavMenu>
     </MudDrawer>
 
-    <div class="mud-height-full">
-        <MudToolBar>
-            <MudTextField T="string"
-                          @bind-Value="@NumeroChamado"
-                          Label="Numero do chamado"
-                          Clearable
-                          Sizing="InputSizing.Fixed"
-                          Style="@("width: 25%;")"
-                          Adornment="Adornment.End"
-                          AdornmentIcon="@Icons.Material.Filled.Search"
-                          AdornmentColor="Color.Inherit"
-                          OnAdornmentClick="BuscarChamado" />
-            <MudSpacer />
-            @* <MudSwitch @bind-Value="@_modoEscuro"
-                       @bind-Value:after="SaveTheme"
-                       ThumbIcon="@ModoEscuroIcone"
-                       ThumbIconColor="@(_modoEscuro == true ? Color.Warning : Color.Dark)"/> *@
-            <MudTooltip Text="Adicionar" Placement="Placement.Left">
-                <MudFabMenu StartIcon="@Icons.Material.Outlined.Add" Color="Color.Primary" Direction="Direction.Bottom" Size="Size.Small" IconSize="Size.Small">
-                    <MudTooltip Text="Chamado" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.StickyNote2" Color="Color.Primary" OnClick="AdicionarTarefa" /></MudTooltip>
-                    <MudTooltip Text="Grupo" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" /></MudTooltip>
-                </MudFabMenu>
-            </MudTooltip>
-            <MudIconButton Icon="@Icons.Material.Outlined.ExitToApp" Color="Color.Error" OnClick="Sair" />
-        </MudToolBar>
-        <MudDivider />
+    <div class="main-content-layout">
+        <div class="main-top-toolbar">
+            <MudToolBar>
+                <div class="w-100 h-100 d-flex align-items-center justify-content-center gap-4">
+                    <div class="w-25 h-100 d-flex align-items-end mb-lg-3">
+                        <MudTextField T="int?"
+                                      @bind-Value="@chamadonumero"
+                                      Label="Numero do chamado"
+                                      Clearable="true"
+                                      Immediate="true"
+                                      Sizing="InputSizing.Fixed"
+                                      Adornment="Adornment.End"
+                                      AdornmentIcon="@Icons.Material.Filled.Search"
+                                      AdornmentColor="Color.Inherit"
+                                      OnAdornmentClick="BuscarChamado" />
+                    </div>
 
-        @Body
+                    <MudSpacer />
+
+                    <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter">
+                        <ActivatorContent>
+                            <MudBadge Content="@Notificacoes.Count" Color="Color.Error" Overlap="true" Bordered="true">
+                                <MudIcon Icon="@NotificacaoIcone" Size="Size.Large" @onclick="@context.ToggleAsync" />
+                            </MudBadge>
+                        </ActivatorContent>
+
+                        <ChildContent>
+                            @foreach (var notificacao in Notificacoes)
+                            {
+                                <MudMenuItem Href="@($"/Chamados/{notificacao.Id}")" Icon="@Icons.Material.Outlined.StickyNote2">
+                                    @notificacao.Titulo
+                                </MudMenuItem>
+                            }
+                        </ChildContent>
+                    </MudMenu>
+
+                    <MudTooltip Text="Adicionar" Placement="Placement.Left">
+                        <MudFabMenu StartIcon="@Icons.Material.Outlined.Add" Color="Color.Primary" Direction="Direction.Bottom" Size="Size.Small" IconSize="Size.Small">
+                            <MudTooltip Text="Chamado" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.StickyNote2" Color="Color.Primary" OnClick="AdicionarTarefa" /></MudTooltip>
+                            <MudTooltip Text="Grupo" Placement="Placement.Left"><MudFabMenuItem StartIcon="@Icons.Material.Outlined.PeopleAlt" Color="Color.Primary" OnClick="AdicionarGrupo" /></MudTooltip>
+                        </MudFabMenu>
+                    </MudTooltip>
+                    <MudIconButton Icon="@Icons.Material.Outlined.ExitToApp" Size="Size.Large" Color="Color.Error" OnClick="Sair" />
+                </div>
+            </MudToolBar>
+            <MudDivider />
+        </div>
+        <main class="main-body-container">
+            @Body
+        </main>
     </div>
 
 </MudDrawerContainer>
+
+<!-- Chat Floating Action Button & Balão de Chat -->
+<div class="chat-fab-wrapper">
+    @if (_chatAberto)
+    {
+        <MudPaper Elevation="8" Class="chat-balloon-card">
+            <!-- Cabeçalho do Chat -->
+            <div class="chat-balloon-header">
+                <div class="chat-header-info">
+                    <MudIcon Icon="@Icons.Material.Filled.Chat" Color="Color.Primary" Size="Size.Medium" />
+                    <div>
+                        <div class="chat-title">TaskMan Chat</div>
+                        <div class="chat-status">
+                            <span class="status-dot"></span> Online
+                        </div>
+                    </div>
+                </div>
+                <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" Color="Color.Inherit" OnClick="AlternarChat" aria-label="Fechar chat" />
+            </div>
+
+            <MudDivider />
+
+            <!-- Mensagens do Chat -->
+            <div class="chat-balloon-messages">
+                @foreach (var msg in _mensagensChat)
+                {
+                    <div class="chat-message @(msg.EnviadoPeloUsuario ? "chat-message-user" : "chat-message-system")">
+                        <div class="message-bubble">
+                            <div class="message-text">@msg.Texto</div>
+                            <div class="message-time">@msg.Horario.ToString("HH:mm")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <MudDivider />
+
+            <!-- Envio de Mensagem -->
+            <div class="chat-balloon-footer">
+                <MudTextField T="string"
+                              @bind-Value="@_novaMensagemChat"
+                              Placeholder="Digite uma mensagem..."
+                              Variant="Variant.Outlined"
+                              Margin="Margin.Dense"
+                              Immediate="true"
+                              OnKeyDown="@HandleChatKeyDown"
+                              Adornment="Adornment.End"
+                              AdornmentIcon="@Icons.Material.Filled.Send"
+                              AdornmentColor="Color.Primary"
+                              OnAdornmentClick="EnviarMensagemChat" />
+            </div>
+        </MudPaper>
+    }
+
+    <MudTooltip Text="@(_chatAberto ? "Fechar Chat" : "Abrir Chat")" Placement="Placement.Left">
+        <MudFab Color="Color.Primary"
+                StartIcon="@(_chatAberto ? Icons.Material.Filled.Close : Icons.Material.Filled.Chat)"
+                Size="Size.Large"
+                OnClick="AlternarChat"
+                Class="chat-fab-button" />
+    </MudTooltip>
+</div>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.

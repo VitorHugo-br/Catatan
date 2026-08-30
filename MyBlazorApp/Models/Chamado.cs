@@ -16,10 +16,11 @@ public class Chamado
     public int? UserId { get; set; }
     public DateTime? CreatedAt { get; set; }
 }
- 
+
 public enum Status
 {
-    Pendente = 0,
-    Desenvolvimento = 1,
-    Entregue = 2
+    Pendente,
+    Desenvolvimento,
+    Concluido,
+    Entregue,
 }

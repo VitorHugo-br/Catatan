@@ -1,23 +1,26 @@
-﻿@page "/"
+@page "/"
 @using MyBlazorApp.Components.Forms
 @rendermode InteractiveServer
 @layout AuthLayout
 
-<PageTitle>Catatan - Login</PageTitle>
+<PageTitle>TaskMan - @(EhLogin ? "Login" : "Cadastro")</PageTitle>
 
 <main class="card-central">
     <div class="painel-esquerda">
         <div class="icone-titulo">
-            <MudIcon Icon="@Icons.Material.Filled.StickyNote2" Title="Catatan" Color="Color.Primary" Size="Size.Large" />
+            <MudIcon Icon="@Icons.Material.Filled.StickyNote2" Title="TaskMan" Color="Color.Primary" Size="Size.Large" />
             <h2>TaskMan</h2>
         </div>
         <div class="bem-vindo">
-            <div>Acesse sua conta</div>
+            <div class="subtitulo-boas-vindas">@(EhLogin ? "Acesse sua conta" : "Crie sua conta")</div>
             <h1>
-                Bem-Vindo
-                <span>de volta.</span>
+                @(EhLogin ? "Bem-Vindo" : "Junte-se")
+                <span>@(EhLogin ? "de volta." : "a nós.")</span>
             </h1>
-            <p>Acesse sua conta para continuar.<br />Dados protegidos com criptografia de ponta a ponta.</p>
+            <p>
+                @(EhLogin ? "Acesse sua conta para continuar." : "Crie sua conta para gerenciar suas tarefas.")
+                <br />Dados protegidos com criptografia de ponta a ponta.
+            </p>
         </div>
         <div class="versao">
             V1.0.0 - @DateTime.Today.Year
